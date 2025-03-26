@@ -10,7 +10,6 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/PatientApplication/pom.xml" />
         <option value="$PROJECT_DIR$/patientapp/pom.xml" />
       </set>
     </option>
