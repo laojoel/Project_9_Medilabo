@@ -3,42 +3,43 @@ package com.medilabo.gatewayapplication.configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 
 public class CloudConfig {
     private static final Logger log = LoggerFactory.getLogger(CloudConfig.class);
 
-    @Value("${microservice-gateway.uri}")
-    private String msGatewayUri;
+    @Value("${gateway-app.uri}")
+    private String gatewayUri;
 
-    @Value("${microservice-patient.uri}")
-    private String msPatientUri;
+    @Value("${patient-app.uri}")
+    private String patientUri;
 
-    @Value("${microservice-note.uri}")
-    private String msNoteUri;
+    @Value("${note-app.uri}")
+    private String noteUri;
 
-    @Value("${microservice-risk.uri}")
-    private String msRiskUri;
+    @Value("${risk-app.uri}")
+    private String riskUri;
 
     @Bean
     RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
-
-        log.info("msGatewayUri : {}, msPatientUri : {}, msNoteUri : {}, msRiskUri : {}",
-                msGatewayUri, msPatientUri, msNoteUri, msRiskUri);
+        log.info("alloc init gateway routes: (1) " + gatewayUri + " | (2) " + patientUri + " | (3) " + noteUri +
+                " | (4) " + riskUri);
 
         return builder.routes()
-                .route(r -> r.path("/ms-patient/patient/**")
-                        .filters(f -> f.rewritePath("/ms-patient/patient/(?<segment>.*)", "/patient/${segment}"))
-                        .uri(msPatientUri))
+                .route(r -> r.path("/patient-app/patient/**")
+                        .filters(f -> f.rewritePath("/patient-app/patient/(?<segment>.*)", "/patient/${segment}"))
+                        .uri(patientUri))
                 .route(r -> r.path("/auth/login")
                         .filters(f -> f.rewritePath("/auth/login", "/login"))
-                        .uri(msGatewayUri))
-                .route(r -> r.path("/ms-note/note/**")
-                        .filters(f -> f.rewritePath("/ms-note/note/(?<segment>.*)", "/note/${segment}"))
-                        .uri(msNoteUri))
-                .route(r -> r.path("/ms-risk/risk/**")
-                        .filters(f -> f.rewritePath("/ms-risk/risk/(?<segment>.*)", "/risk/${segment}"))
-                        .uri(msRiskUri))
+                        .uri(gatewayUri))
+                .route(r -> r.path("/note-app/note/**")
+                        .filters(f -> f.rewritePath("/note-app/note/(?<segment>.*)", "/note/${segment}"))
+                        .uri(noteUri))
+                .route(r -> r.path("/risk-app/risk/**")
+                        .filters(f -> f.rewritePath("/risk-app/risk/(?<segment>.*)", "/risk/${segment}"))
+                        .uri(riskUri))
                 .build();
     }
 }
