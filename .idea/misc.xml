@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/PatientApplication/pom.xml" />
         <option value="$PROJECT_DIR$/patientapp/pom.xml" />
         <option value="$PROJECT_DIR$/GatewayApplication/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway-application/pom.xml" />
+        <option value="$PROJECT_DIR$/patient-application/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

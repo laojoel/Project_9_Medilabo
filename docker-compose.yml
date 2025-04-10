@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   gateway-application:
-    build: ./gateway-application
+    build: oldgateway-application
     image: gateway-application
     container_name: gateway-application
     ports:
@@ -14,7 +14,7 @@ services:
       - intra-network
 
   patient-application:
-    build: ./patient-application
+    build: oldpatient-application
     image: patient-application
     container_name: patient-application
     depends_on:
