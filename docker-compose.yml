@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   gateway-application:
-    build: oldgateway-application
+    build: gateway-application
     image: gateway-application
     container_name: gateway-application
     ports:
@@ -14,7 +14,7 @@ services:
       - intra-network
 
   patient-application:
-    build: oldpatient-application
+    build: patient-application
     image: patient-application
     container_name: patient-application
     depends_on:
@@ -24,8 +24,8 @@ services:
       - 18081:8081
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:18091/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME:
-      SPRING_DATASOURCE_PASSWORD:
+      SPRING_DATASOURCE_USERNAME: UserTest
+      SPRING_DATASOURCE_PASSWORD: PasswordTest
     networks:
       - intra-network
 
@@ -34,9 +34,9 @@ services:
     container_name: patient-database
     environment:
       MYSQL_TCP_PORT: 8091
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: RecTestPassword
       MYSQL_DATABASE: patients
-      MYSQL_PASSWORD:
+      MYSQL_PASSWORD: UserTest
     ports:
       - 18091:8091
     healthcheck:
