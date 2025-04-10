@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  gateway-application:
+    build: ./gateway-application
+    image: gateway-application
+    container_name: gateway-application
+    ports:
+      - 18080:8080
+    environment:
+      GATEWAY_APP_URI: gateway-application:8080
+      PATIENT_APP_URI: patient-application:8081
+    networks:
+      - intra-network
+
+  patient-application:
+    build: ./patient-application
+    image: patient-application
+    container_name: patient-application
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    ports:
+      - 18081:8081
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:18091/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME:
+      SPRING_DATASOURCE_PASSWORD:
+    networks:
+      - intra-network
+
+  mysqldb:
+    image: mysql:8.0.13
+    container_name: patient-database
+    environment:
+      MYSQL_TCP_PORT: 8091
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: patients
+      MYSQL_PASSWORD:
+    ports:
+      - 18091:8091
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -p$$MYSQL_PASSWORD | grep alive || exit 1" ]
+      interval: 20s
+      timeout: 10s
+      retries: 2
+      start_period: 5s
+    networks:
+      - intra-network
+    volumes:
+      - data:/var/lib/mysql

@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="GatewayApplication" />
+        <module name="gateway-application" />
       </profile>
       <profile name="Annotation profile for PatientApplication" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -15,7 +15,7 @@
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
-        <module name="PatientApplication" />
+        <module name="patient-application" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,8 +24,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="GatewayApplication" options="-parameters" />
-      <module name="PatientApplication" options="-parameters" />
+      <module name="gateway-application" options="-parameters" />
+      <module name="patient-application" options="-parameters" />
       <module name="patientapp" options="-parameters" />
     </option>
   </component>
