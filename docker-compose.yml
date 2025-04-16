@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   gateway-application:
     build: gateway-application
@@ -48,4 +46,11 @@ services:
     networks:
       - intra-network
     volumes:
-      - data:/var/lib/mysql
+      - mysqldatabase:/var/lib/mysql
+
+networks:
+  intra-network:
+    driver: bridge
+
+volumes:
+  mysqldatabase:

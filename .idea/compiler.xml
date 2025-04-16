@@ -16,6 +16,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="patient-application" />
+        <module name="front-application" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="front-application" options="-parameters" />
       <module name="gateway-application" options="-parameters" />
       <module name="patient-application" options="-parameters" />
       <module name="patientapp" options="-parameters" />
