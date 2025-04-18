@@ -31,7 +31,7 @@ public class AuthenticationService {
         } catch (FeignException e) {
             user.setAuthenticated(false);
             if (e.status() == 401) {
-                log.info("Authentication Failed for user: " + user.getUsername());
+                log.warn("Authentication Failed for user: " + user.getUsername());
                 user.setMessage("Wrong username or password");
             }
             else {

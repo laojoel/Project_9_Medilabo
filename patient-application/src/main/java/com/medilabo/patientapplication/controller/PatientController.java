@@ -16,7 +16,6 @@ public class PatientController {
     private final PatientService patientService;
 
     private static final Logger log = LoggerFactory.getLogger(PatientController.class);
-    // log.info("/patients : Getting the list of all patients");
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;

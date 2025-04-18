@@ -1,5 +1,5 @@
 INSERT INTO patient (firstName, lastName, dateOfBirth, gender, address, phoneNumber) VALUES
-('Jack',  'void',   '1962-08-21', 'M', '1 saturn street', '1111222233'),
-('Tina',  'Near',   '1988-06-14', 'F', '2 frenzy street', '4444555566'),
-('Fredy', 'Danger', '1995-02-23', 'M', '3 omega road',    '7777888899'),
-('Diana', 'Early',  '2001-09-11', 'F', '4 dragon road',   '8888999900');
+('Test', 'TestNone', '1966-12-31', 'F', '1 Brookside St', '1002223333'),
+('Test', 'TestBorderline', '1945-06-24', 'M', '2 High St', '2003334444'),
+('Test', 'TestInDanger', '2004-06-18', 'M', '3 Club Road', '3004445555'),
+('Test', 'TestEarlyOnset', '2002-06-28', 'F', '4 Valley Dr', '4005556666');
