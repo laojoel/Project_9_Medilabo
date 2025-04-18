@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class SessionContext {
+    private String credential ="";
     private User authanticatedUser;
     private String message="";
     private String url="";
+    private int authenticationErrorCode=0;
 
 }

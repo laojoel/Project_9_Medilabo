@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {
@@ -23,19 +25,19 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges.anyExchange().authenticated())
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable);
+                .httpBasic(withDefaults());
         return http.build();
     }
 
     @Bean
     public MapReactiveUserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("john Smith")
-                .password(passwordEncoder().encode("smith-123456"))
+        UserDetails user = User.withUsername("user")
+                .password(passwordEncoder().encode("user"))
                 .roles("USER")
                 .build();
 
-        UserDetails admin = User.withUsername("Jane Doe")
-                .password(passwordEncoder().encode("doe-654321"))
+        UserDetails admin = User.withUsername("admin")
+                .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN")
                 .build();
         return new MapReactiveUserDetailsService(user, admin);

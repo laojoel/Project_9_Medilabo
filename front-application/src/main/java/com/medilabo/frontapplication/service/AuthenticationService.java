@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.medilabo.frontapplication.proxy.AuthenticationProxy;
 import feign.FeignException;
 
+import java.util.Base64;
+
 @Service
 public class AuthenticationService {
 
@@ -19,22 +21,24 @@ public class AuthenticationService {
         this.authenticationProxy = authenticationProxy;
     }
 
-    public void login(String authenticationHeader, User user) {
+    public void login(User user) {
+        byte[] encodedBytes = Base64.getEncoder().encode((user.getUsername() + ":" + user.getPassword()).getBytes());
+        String credential = "Basic " + new String(encodedBytes);
+
         try {
-            authenticationProxy.login(authenticationHeader);
-            //sessionContext.getAuthanticatedUser().setUsername(user.getUsername());
-            //sessionContext.getAuthanticatedUser().setPassword(user.getPassword());
+            authenticationProxy.login(credential);
+            user.setAuthenticated(true);
         } catch (FeignException e) {
+            user.setAuthenticated(false);
             if (e.status() == 401) {
                 log.info("Authentication Failed for user: " + user.getUsername());
-                //sessionContext.setMessage("Wrong username or password");
+                user.setMessage("Wrong username or password");
             }
             else {
-                log.error("FeignException " + e.status() + ": " + e.getMessage());
+                log.error("FeignException " + e.status() + ": " + e.getMessage() + " for Login " + user.getUsername());
+                user.setMessage("Error " + e.status() + ". Please reach out our support for further assistance");
             }
         }
-        //String urlTempo = sessionContext.getRedirectAfterExceptionUrl();
-        //SessionContext.setReturnUrl("redirect:" + urlTempo);
     }
 
 }

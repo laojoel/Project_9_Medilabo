@@ -6,39 +6,42 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class CloudConfig {
     private static final Logger log = LoggerFactory.getLogger(CloudConfig.class);
 
-    @Value("${gateway-app.uri}")
+    @Value("${gateway-application.uri}")
     private String gatewayUri;
 
-    @Value("${patient-app.uri}")
+    @Value("${patient-application.uri}")
     private String patientUri;
 
-    @Value("${note-app.uri}")
+    @Value("${note-application.uri}")
     private String noteUri;
 
-    @Value("${risk-app.uri}")
+    @Value("${risk-application.uri}")
     private String riskUri;
 
     @Bean
     RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
+        System.out.println("CHECKER SIGNAL OK ------------------------------------ !");
         log.info("alloc init gateway routes: (1) " + gatewayUri + " | (2) " + patientUri + " | (3) " + noteUri +
                 " | (4) " + riskUri);
 
         return builder.routes()
-                .route(r -> r.path("/patient-app/patient/**")
-                        .filters(f -> f.rewritePath("/patient-app/patient/(?<segment>.*)", "/patient/${segment}"))
+                .route(r -> r.path("/patient-application/patient/**")
+                        .filters(f -> f.rewritePath("/patient-application/patient/(?<segment>.*)", "/patient/${segment}"))
                         .uri(patientUri))
-                .route(r -> r.path("/auth/login")
-                        .filters(f -> f.rewritePath("/auth/login", "/login"))
+                .route(r -> r.path("/authentication/login")
+                        .filters(f -> f.rewritePath("/authentication/login", "/login"))
                         .uri(gatewayUri))
-                .route(r -> r.path("/note-app/note/**")
-                        .filters(f -> f.rewritePath("/note-app/note/(?<segment>.*)", "/note/${segment}"))
+                .route(r -> r.path("/note-application/note/**")
+                        .filters(f -> f.rewritePath("/note-application/note/(?<segment>.*)", "/note/${segment}"))
                         .uri(noteUri))
-                .route(r -> r.path("/risk-app/risk/**")
-                        .filters(f -> f.rewritePath("/risk-app/risk/(?<segment>.*)", "/risk/${segment}"))
+                .route(r -> r.path("/risk-application/risk/**")
+                        .filters(f -> f.rewritePath("/risk-application/risk/(?<segment>.*)", "/risk/${segment}"))
                         .uri(riskUri))
                 .build();
     }

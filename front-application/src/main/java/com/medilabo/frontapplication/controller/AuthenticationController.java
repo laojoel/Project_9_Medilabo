@@ -1,5 +1,6 @@
 package com.medilabo.frontapplication.controller;
 
+import com.medilabo.frontapplication.context.SessionContext;
 import com.medilabo.frontapplication.model.User;
 import com.medilabo.frontapplication.service.AuthenticationService;
 import jakarta.validation.Valid;
@@ -28,8 +29,10 @@ public class AuthenticationController {
 
     @GetMapping("/")
     public String loginForm(Model model) {
-        model.addAttribute("user", "");
-        model.addAttribute("message", "");
+        User user = new User();
+        user.setUsername("testUser"); user.setPassword("pass");
+        model.addAttribute("user", user);
+        model.addAttribute("message", "hi");
         return "login";
     }
 
@@ -41,11 +44,14 @@ public class AuthenticationController {
             return "login";
         }
 
-        //byte[] encodedBytes = Base64.getEncoder().encode((user.getUsername() + ":" + user.getPassword()).getBytes());
-        //String authenticationHeader = "Basic " + new String(encodedBytes);
+        authenticationService.login(user);
 
-        //authenticationService.login(authenticationHeader, user);
-
+        if(user.isAuthenticated()) {
+            return "home"; // was return
+        }
+        user.setPassword("");
+        model.addAttribute("user", user);
+        model.addAttribute("message", user.getMessage());
         return "login"; // was return
     }
 
