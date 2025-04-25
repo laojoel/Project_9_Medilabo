@@ -22,6 +22,6 @@ public class PatientController {
 
     @RequestMapping("/patient/patients")
     public String patientList(Model model) {
-
+        return  "to do";
     }
 }

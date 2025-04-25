@@ -1,5 +1,6 @@
 package com.medilabo.gatewayapplication.configuration;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@Getter
 public class CloudConfig {
     private static final Logger log = LoggerFactory.getLogger(CloudConfig.class);
 
@@ -24,13 +26,18 @@ public class CloudConfig {
     @Value("${risk-application.uri}")
     private String riskUri;
 
+    @Value("${front-application.uri}")
+    private String frontUri;
+
+
     @Bean
     RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
-        System.out.println("CHECKER SIGNAL OK ------------------------------------ !");
-        log.info("alloc init gateway routes: (1) " + gatewayUri + " | (2) " + patientUri + " | (3) " + noteUri +
-                " | (4) " + riskUri);
+        log.info("alloc init gateway routes:\n0 | gateway | " + gatewayUri + "\n1 | patient app | " + patientUri + "\n2 | note app | " + noteUri +
+                "\n3 | risk app | " + riskUri);
 
         return builder.routes()
+                .route("login_service", r -> r.path("/login/**")
+                        .uri("lb://LOGIN-SERVICE"))
                 .route(r -> r.path("/patient-application/patient/**")
                         .filters(f -> f.rewritePath("/patient-application/patient/(?<segment>.*)", "/patient/${segment}"))
                         .uri(patientUri))

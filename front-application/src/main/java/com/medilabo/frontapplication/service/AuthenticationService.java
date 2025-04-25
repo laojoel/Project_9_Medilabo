@@ -1,6 +1,5 @@
 package com.medilabo.frontapplication.service;
 
-import com.medilabo.frontapplication.context.SessionContext;
 import com.medilabo.frontapplication.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
