@@ -27,12 +27,12 @@ import java.net.URI;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
+    private final CloudConfig cloudConfig;
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-    private CloudConfig cloudConfig;
     public SecurityConfig(CloudConfig cloudConfig) {
         this.cloudConfig = cloudConfig;
-
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -61,14 +61,25 @@ public class SecurityConfig {
                                     .map(authority -> authority.substring(4)) // Extract the UID part
                                     .findFirst()
                                     .orElse("");
-                            ResponseCookie cookie = ResponseCookie.from("UID", userUid)
-                                    .path("/")
-                                    .httpOnly(true)
-                                    .secure(false) // Set to true if using HTTPS
-                                    .build();
-                            exchange.getResponse().addCookie(cookie);
-                            exchange.getResponse().setStatusCode(HttpStatus.FOUND);
-                            exchange.getResponse().getHeaders().setLocation(URI.create("/home"));
+
+                            System.out.println("authority = " + authentication.getAuthorities());
+                            System.out.println("userUid = " + userUid);
+
+                            if (!userUid.isEmpty()) {
+                                ResponseCookie cookie = ResponseCookie.from("UID", userUid)
+                                        .path("/")
+                                        .httpOnly(true)
+                                        .secure(false) // Set to true if using HTTPS
+                                        .build();
+                                exchange.getResponse().addCookie(cookie);
+                                exchange.getResponse().setStatusCode(HttpStatus.FOUND);
+                                exchange.getResponse().getHeaders().setLocation(URI.create(cloudConfig.getFrontUri()+"/home"));
+                            }
+                            else {
+                                exchange.getResponse().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+                                exchange.getResponse().getHeaders().setLocation(URI.create("/error"));
+                                logger.error("user authenticated without UID");
+                            }
                             return exchange.getResponse().setComplete();
                         })
                         .authenticationFailureHandler((webFilterExchange, exception) -> {
@@ -89,14 +100,14 @@ public class SecurityConfig {
     public MapReactiveUserDetailsService userDetailsService() {
         UserDetails user = User.builder().username("user")
                 .password(passwordEncoder().encode("user"))
-                .authorities("UID_123456789")
-                .roles("ROLE_USER")
+                .roles("USER")
+                .authorities("UID_0")
                 .build();
 
         UserDetails admin = User.builder().username("admin")
                 .password(passwordEncoder().encode("admin"))
-                .authorities("UID_111122223")
-                .roles("ROLE_ADMIN")
+                .roles("ADMIN")
+                .authorities("UID_1")
                 .build();
 
         return new MapReactiveUserDetailsService(user, admin);

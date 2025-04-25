@@ -33,11 +33,14 @@ public class CloudConfig {
     @Bean
     RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         log.info("alloc init gateway routes:\n0 | gateway | " + gatewayUri + "\n1 | patient app | " + patientUri + "\n2 | note app | " + noteUri +
-                "\n3 | risk app | " + riskUri);
+                "\n3 | risk app | " + riskUri +  "\n4 | front app | " + frontUri);
 
         return builder.routes()
                 .route("login_service", r -> r.path("/login/**")
                         .uri("lb://LOGIN-SERVICE"))
+                .route(r -> r.path("/front-application/front/**")
+                        .filters(f -> f.rewritePath("/patient-application/patient/(?<segment>.*)", "/patient/${segment}"))
+                        .uri(frontUri))
                 .route(r -> r.path("/patient-application/patient/**")
                         .filters(f -> f.rewritePath("/patient-application/patient/(?<segment>.*)", "/patient/${segment}"))
                         .uri(patientUri))

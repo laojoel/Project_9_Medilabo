@@ -13,9 +13,12 @@ public class AuthenticationController {
         return Mono.just("login");
     }
 
+    /*
     @GetMapping("/home")
     public Mono<String> home(@CookieValue(value = "UID", defaultValue = "") String uid) {
+
         System.out.println("home | cookie UID = " +  uid);
         return Mono.just("home");
     }
+     */
 }
