@@ -37,7 +37,7 @@ services:
       environment:
         GATEWAY_APPLICATION_URL: gateway-application:8080
       networks:
-        - medilabo_network
+        - intra-network
 
   mysqldb: #------------------------------------------------------------- mysql database
     image: mysql:8.0.13
