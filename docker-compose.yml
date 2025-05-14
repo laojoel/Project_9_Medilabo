@@ -1,6 +1,8 @@
+version: '3.8'
+
 services:
   gateway-application: #------------------------------------------------ gateway application
-    build: /.gateway-application
+    build: ./gateway-application
     image: gateway-application
     container_name: gateway-application
     ports:
@@ -12,45 +14,55 @@ services:
     networks:
       - intra-network
 
+  front-application: #-------------------------------------------------- front application
+    build: ./front-application
+    image: front-application
+    container_name: front-application
+    ports:
+      - 18082:8082
+    environment:
+      GATEWAY_APPLICATION_URI: gateway-application:8080
+    networks:
+      - intra-network
+
   patient-application: #------------------------------------------------ patient application
-    build: /.patient-application
+    build: ./patient-application
     image: patient-application
     container_name: patient-application
     depends_on:
-      mysqldb:
+      patient-database:
         condition: service_healthy
     ports:
       - 18081:8081
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:18091/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: UserTest
-      SPRING_DATASOURCE_PASSWORD: PasswordTest
+      SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:3306/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: TestPassword
     networks:
       - intra-network
 
-  front-application: #-------------------------------------------------- front application
-      build: ./front-application
-      image: front-application
-      container_name: front-application
-      ports:
-        - 18080:8082
-      environment:
-        GATEWAY_APPLICATION_URL: gateway-application:8080
-      networks:
-        - intra-network
+  auth-service:
+    build: ./authentication-application
+    image: authentication-application
+    container_name: authentication-application
+    restart: always
+    ports:
+      - 18080:8083
+    networks:
+      - intra-network
+    volumes:
+      - .m2:/root/.m2
 
-  mysqldb: #------------------------------------------------------------- mysql database
+  patient-database: #------------------------------------------------------------- patient database (mysql)
     image: mysql:8.0.13
     container_name: patient-database
     environment:
-      MYSQL_TCP_PORT: 8091
-      MYSQL_ROOT_PASSWORD: RecTestPassword
       MYSQL_DATABASE: patients
-      MYSQL_PASSWORD: UserTest
+      MYSQL_ROOT_PASSWORD: TestPassword
     ports:
-      - 18091:8091
+      - 3307:3306
     healthcheck:
-      test: [ "CMD-SHELL", "mysqladmin ping -p$$MYSQL_PASSWORD | grep alive || exit 1" ]
+      test: [ "CMD-SHELL", "mysqladmin ping -pTestPassword | grep alive || exit 1" ]
       interval: 20s
       timeout: 10s
       retries: 2
@@ -58,11 +70,12 @@ services:
     networks:
       - intra-network
     volumes:
-      - mysqldatabase:/var/lib/mysql
+      - patientDatabase:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 networks: #--------------------------------------------------------------- network & volume database
   intra-network:
     driver: bridge
 
 volumes:
-  mysqldatabase:
+  patientDatabase:

@@ -1,27 +1,20 @@
 package com.medilabo.frontapplication.controller;
 
-import com.medilabo.frontapplication.model.Patient;
-import com.medilabo.frontapplication.service.PatientService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
-
+@Slf4j
 @Controller
 public class PatientController {
-    private static final Logger log = LoggerFactory.getLogger(PatientController.class);
 
-    private PatientService patientService;
-
-    public PatientController(PatientService patientService) {
-        this.patientService = patientService;
+    @GetMapping("/patients")
+    public String home(HttpServletRequest request, Model model) {
+        //model.addAttribute("patients",);
+        return "patients";
     }
 
-    @RequestMapping("/patient/patients")
-    public String patientList(Model model) {
-        return  "to do";
-    }
+
 }

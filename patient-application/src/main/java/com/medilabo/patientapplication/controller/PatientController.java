@@ -23,6 +23,7 @@ public class PatientController {
 
     @GetMapping("/patient/list")
     public ResponseEntity<List<Patient>> findAllPatients() {
+        System.out.println("Patient MS | Endpoint: patient/list ");
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(patientService.getAll());
     }
 

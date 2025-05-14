@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="authentication-application" />
         <module name="gateway-application" />
       </profile>
       <profile name="Annotation profile for patient-application" enabled="true">
@@ -34,6 +35,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authentication-application" options="-parameters" />
       <module name="front-application" options="-parameters" />
       <module name="gateway-application" options="" />
       <module name="patient-application" options="-parameters" />
