@@ -9,4 +9,6 @@ To run the project locally:
   2) run the command "docker-compose up --build"
   3) Access **http://localhost:8080/**
 
-     
+
+Basic architecture presantation:
+![basic architecture diagram](readmeImages/architecture.png)
