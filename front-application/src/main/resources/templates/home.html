@@ -11,11 +11,12 @@
 
 <body class="container-sm text-center">
 
-	<header>
-		<img th:src="@{images/medilaboBannerWithoutText.jpg}" />
-	</header>
-
-	<nav class="mx-4 p-4 text-end">
+	<nav class="d-flex justify-content-between align-items-center mx-4 p-4">
+		<div class="d-flex align-items-center">
+			<img th:src="@{../images/medilaboBannerWithoutText.jpg}" />
+			<a href="/home" class="btn btn-outline-info btn-sm me-2">Home</a>
+			<a href="/patients" class="btn btn-outline-info btn-sm">Patients</a>
+		</div>
 		<a href="/logout" class="btn btn-outline-info btn-sm">Logout</a>
 	</nav>
 
@@ -25,7 +26,7 @@
 		</div>
 	
 		<div class="mx-4 p-4">
-			<a href="/patient/patients" class="btn btn-outline-info btn-lg">List
+			<a href="/patients" class="btn btn-outline-info btn-lg">List
 				of patients</a>
 		</div>
 	</section>

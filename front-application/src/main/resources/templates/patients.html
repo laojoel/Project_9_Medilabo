@@ -10,12 +10,12 @@
 </head>
 
 <body class="container-sm text-center">
-
-	<header class="container-sm text-center">
-		<img th:src="@{../images/medilaboBannerWithoutText.jpg}" />
-	</header>
-
-	<nav class="mx-4 p-4 text-end">
+	<nav class="d-flex justify-content-between align-items-center mx-4 p-4">
+		<div class="d-flex align-items-center">
+			<img th:src="@{../images/medilaboBannerWithoutText.jpg}" />
+			<a href="/home" class="btn btn-outline-info btn-sm me-2">Home</a>
+			<a href="/patients" class="btn btn-outline-info btn-sm">Patients</a>
+		</div>
 		<a href="/logout" class="btn btn-outline-info btn-sm">Logout</a>
 	</nav>
 
@@ -51,8 +51,8 @@
 						<td th:text="${patient.gender}"></td>
 						<td th:text="${patient.address}"></td>
 						<td th:text="${patient.phoneNumber}"></td>
-						<td><a th:href="@{/patient/view/{id}(id=${patient.id})}">View</a>
-							<a th:href="@{/patient/delete/{id}(id=${patient.id})}">Delete</a>
+						<td><a th:href="@{/patients/view(id=${patient.id})}">View</a>
+							<a th:href="@{/patients/delete/{id}(id=${patient.id})}">Delete</a>
 						</td>
 					</tr>
 				</tbody>

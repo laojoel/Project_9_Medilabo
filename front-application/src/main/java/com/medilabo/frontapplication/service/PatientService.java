@@ -4,6 +4,9 @@ import com.medilabo.frontapplication.model.Patient;
 import com.medilabo.frontapplication.proxy.GatewayRoutes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,8 +24,23 @@ public class PatientService {
     }
 
     public List<Patient> getAllPatients() {
-        //log.info("Attempt to fetch list of all patients");
-        //List<Patient> patients = authRestTemplate.getForObject(routes.getAllPatientUri(), List.class);
-        return null;
+        log.info("fetch all patients");
+        ResponseEntity<List<Patient>> responseEntity = authRestTemplate.exchange(
+                routes.getAllPatientUri(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Patient>>() {}
+        );
+        return responseEntity.getBody();
+    }
+    public Patient getPatientId(long id) {
+        log.info("fetch detail patients id " + id + " | " + routes.getPatientViewUri()+"/"+id);
+        ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
+                routes.getPatientViewUri()+"/"+id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Patient>() {}
+        );
+        return responseEntity.getBody();
     }
 }

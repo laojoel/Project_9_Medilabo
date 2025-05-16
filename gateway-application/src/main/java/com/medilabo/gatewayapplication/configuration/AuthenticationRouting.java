@@ -7,13 +7,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
-public class ApplicationRooting {
+public class AuthenticationRouting {
 
     @Value("${authentication-uri}")
     private String authenticationUri;
 
     @Bean
-    public RouteLocator authRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
+    public RouteLocator authenticationRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
                 .route(r -> r.path("/authentication").filters(f -> f.filter(filter)).uri(authenticationUri))

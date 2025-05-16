@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css" />
+
+</head>
+
+    <main class="container">
+        <div class="row">
+            <div class="col-sm-11 col-12">
+                <h1>Dossier de <span th:text="${patient.firstName}"></span> <span th:text="${patient.lastName}"></span></h1>
+            </div>
+            <div class="col-12">
+                <a th:href="@{/patients/{id}/edit (id=${patient.id})}" class="btn btn-primary">Editer</a>
+                <a th:href="@{/patients}" class="btn btn-secondary">Retour</a>
+            </div>
+        </div>
+        <br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Prénom</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Date de naissance</th>
+                <th scope="col">Genre</th>
+                <th scope="col">Adresse</th>
+                <th scope="col">Numéro de téléphone</th>
+                <th scope="col">Risques</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${patient.firstName}"></td>
+                <td th:text="${patient.lastName}"></td>
+                <td th:text="${patient.dateOfBirth}"></td>
+                <td th:text="${patient.gender}"></td>
+                <td th:text="${patient.address}"></td>
+                <td th:text="${patient.phoneNumber}"></td>
+                <td th:text="risk"></td><!-- <td th:text="${patient.evaluationRisque}"></td> -->
+            </tr>
+            </tbody>
+        </table>
+
+        <a th:href="@{/note/{patId}/{patient} (patId=${patient.id}, patient=${patient.lastName})}" class="btn btn-primary" style="margin-top: 20px">Nouvelle note</a>
+
+        <div th:if="${patient.notes == null || patient.notes.isEmpty() }" class="alert alert-primary" role="alert" style="margin-top: 20px">
+            Pas encore de note !
+        </div>
+        <br>
+        <br>
+        <table class="table table-striped" th:if="${patient.notes != null && !patient.notes.isEmpty()}">
+            <thead>
+            <tr>
+                <th scope="col">Notes</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="note : ${patient.notes}">
+                <td th:text="${note}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+</html>

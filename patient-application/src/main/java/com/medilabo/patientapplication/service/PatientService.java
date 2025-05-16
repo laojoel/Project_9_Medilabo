@@ -24,11 +24,13 @@ public class PatientService {
     public List<Patient> getAll() {
         return patientRepository.findAll();
     }
-    public Optional<Patient> getById(Integer id) {
+
+    public Patient getById(Integer id) {
         Optional<Patient> patients = patientRepository.findById(id);
         if (patients.isEmpty()) {
             log.error("Patient with id " + id + " not found");
+            return null;
         }
-        return patients;
+        return patients.get();
     }
 }
