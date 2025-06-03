@@ -43,4 +43,25 @@ public class PatientService {
         );
         return responseEntity.getBody();
     }
+    public Patient updatePatientId(long id) { // NOT SURE IF IT WORKS, TODO: TO GO BACK HERE
+        log.info("update detail patients id " + id + " | " + routes.getPatientViewUri()+"/"+id);
+        ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
+                routes.getPatientUpdateUri()+"/"+id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Patient>() {}
+        );
+        return responseEntity.getBody();
+    }
+
+    public Patient createPatient(Patient patient) {
+        log.info("create new patients " + patient + " | " + routes.getPatientCreateUri());
+        ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
+                routes.getPatientCreateUri(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Patient>() {}
+        );
+        return responseEntity.getBody();
+    }
 }

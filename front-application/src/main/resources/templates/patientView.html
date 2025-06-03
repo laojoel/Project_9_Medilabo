@@ -3,33 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
-    <link rel="stylesheet" type="text/css"
-          href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css" />
+    <title>Patients Case</title>
+    <link rel="stylesheet" type="text/css" href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
 </head>
-
     <main class="container">
         <div class="row">
             <div class="col-sm-11 col-12">
-                <h1>Dossier de <span th:text="${patient.firstName}"></span> <span th:text="${patient.lastName}"></span></h1>
+                <h1><span th:text="${patient.firstName}"></span> <span th:text="${patient.lastName}"></span>'s case</h1>
             </div>
             <div class="col-12">
-                <a th:href="@{/patients/{id}/edit (id=${patient.id})}" class="btn btn-primary">Editer</a>
-                <a th:href="@{/patients}" class="btn btn-secondary">Retour</a>
+                <a th:href="@{/patients/edit(id=${patient.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/patients}" class="btn btn-secondary">Back</a>
             </div>
         </div>
         <br>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Prénom</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Date de naissance</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Numéro de téléphone</th>
-                <th scope="col">Risques</th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Address</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Risk</th>
             </tr>
             </thead>
             <tbody>
@@ -45,10 +44,11 @@
             </tbody>
         </table>
 
-        <a th:href="@{/note/{patId}/{patient} (patId=${patient.id}, patient=${patient.lastName})}" class="btn btn-primary" style="margin-top: 20px">Nouvelle note</a>
+        <!--<a th:href="@{/note/{patId}/{patient} (patId=${patient.id}, patient=${patient.lastName})}" class="btn btn-primary" style="margin-top: 20px">Nouvelle note</a>-->
+        <a id="newNoteField" class="btn btn-primary" style="margin-top: 20px">new note</a>
 
         <div th:if="${patient.notes == null || patient.notes.isEmpty() }" class="alert alert-primary" role="alert" style="margin-top: 20px">
-            Pas encore de note !
+            void
         </div>
         <br>
         <br>
@@ -65,4 +65,58 @@
             </tbody>
         </table>
     </main>
+
+    <!-- Modal -->
+    <div id="noteModal" class="modal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" id="noteFrame">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="noteTitle">Edit Note</h2>
+                    <button type="button" class="btn-close" onclick="closeNote()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="noteText" class="form-control" rows="4" cols="50"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveNote()">Save</button>
+                </div>
+            </div>
+        </div>
+        <div id="mbg" class="modal-bg" onclick="closeNote()" ></div>
+    </div>
+
+    <script>
+        let noteType = 0;
+
+        document.getElementById('newNoteField').onclick = function() {
+            noteType = 1;
+            document.getElementById('noteTitle').innerText = "New Note";
+            document.getElementById('noteModal').style.display = 'block';
+        };
+        document.getElementById('editNoteField').onclick = function() {
+            noteType = 2;
+            document.getElementById('noteTitle').innerText = "Edit Note";
+            document.getElementById('noteModal').style.display = 'block';
+        };
+        document.getElementById('closeModal').onclick = function() {
+            noteType = 0;
+            document.getElementById('noteModal').style.display = 'none';
+        };
+        document.getElementById('mbg').onclick = function() {
+            noteType = 0;
+            document.getElementById('noteModal').style.display = 'none';
+        };
+
+        function saveNote() {
+            noteType = 0;
+            var noteContent = document.getElementById('noteText').value;
+            document.getElementById('newNoteField').value = noteContent;
+            document.getElementById('noteModal').style.display = 'none';
+        }
+        function closeNote() {
+            noteType = 0;
+            document.getElementById('noteText').value = '';
+            document.getElementById('noteModal').style.display = 'none';
+        }
+    </script>
 </html>

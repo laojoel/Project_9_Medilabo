@@ -16,6 +16,8 @@
         <module>gateway-application</module>
         <module>front-application</module>
         <module>patient-application</module>
+        <module>authentication-application</module>
+        <module>note-application</module>
     </modules>
 
     <build>

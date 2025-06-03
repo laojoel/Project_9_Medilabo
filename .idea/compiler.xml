@@ -28,6 +28,15 @@
         </processorPath>
         <module name="front-application" />
       </profile>
+      <profile name="Annotation profile for note-application" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="note-application" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="patientapp" target="21" />
@@ -38,6 +47,7 @@
       <module name="authentication-application" options="-parameters" />
       <module name="front-application" options="-parameters" />
       <module name="gateway-application" options="" />
+      <module name="note-application" options="-parameters" />
       <module name="patient-application" options="-parameters" />
       <module name="patientapp" options="-parameters" />
     </option>

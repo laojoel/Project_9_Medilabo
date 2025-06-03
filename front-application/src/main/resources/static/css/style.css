@@ -1,0 +1,29 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Ensure it's above other content */
+    display: none; /* Initially hide the modal */
+}
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 1040; /* Ensure it's below the modal content */
+}
+.modal-dialog-centered {
+    z-index: 1060; /* Ensure it's above the background */
+}
+
+.patients-Table:hover {
+    color: red;
+    background-color: #ff0000; /* Change this color to whatever suits your design */
+    cursor: pointer; /* This makes it clear that the row is clickable */
+}

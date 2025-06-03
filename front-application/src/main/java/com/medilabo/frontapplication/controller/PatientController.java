@@ -1,14 +1,14 @@
 package com.medilabo.frontapplication.controller;
 
+import com.medilabo.frontapplication.model.Patient;
 import com.medilabo.frontapplication.service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequestMapping("/patients")
@@ -28,9 +28,48 @@ public class PatientController {
     }
 
     @GetMapping("/view")
-    public String dossierPatient(@RequestParam("id") Long id, Model model) {
+    public String patientView(@RequestParam("id") Long id, Model model) {
         log.info("Display patient ID " + id + " folder");
         model.addAttribute("patient", patientService.getPatientId(id));
+        return "patientView";
+    }
+
+    @GetMapping("/edit")
+    public String patientEdit(@RequestParam("id") Long id, Model model) {
+        log.info("Modify patient ID " + id + " info");
+        model.addAttribute("patient", patientService.getPatientId(id));
+        return "patientEdit";
+    }
+
+    @PostMapping("/edit")
+    public String patientEdit(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model, HttpServletRequest request) {
+
+        if (result.hasErrors()) {
+            log.warn("patient modification form has incorrect entries");
+           return "patientEdit";
+        }
+
+        log.info("Modify patient ID " + patient.getId() + " info");
+        model.addAttribute("patient",  patient.getId());
+        return "patientView";
+    }
+
+    @GetMapping("/create")
+    public String patientCreate(Model model) {
+        log.info("display creation form for patient");
+        model.addAttribute("patient", new Patient());
+        return "patientCreate";
+    }
+
+    @PostMapping("/create")
+    public String patientCreate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model, HttpServletRequest request) {
+
+        if (result.hasErrors()) {
+            log.warn("patient creation form has incorrect entries");
+            return "patientCreate";
+        }
+        //log.info("Create patient ID " + patient.getId() + " info");
+        model.addAttribute("patient",  patient.getId());
         return "patientView";
     }
 

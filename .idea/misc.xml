@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/front-application/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/authentication-application/pom.xml" />
+        <option value="$PROJECT_DIR$/note-application/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ENG">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Medilabo</title>
+        <link rel="stylesheet" type="text/css" href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
+    </head>
+    <main class="container">
+        <h1>EDIT PATIENT</h1><br>
+        <div class="card">
+            <form th:action="@{/patient/{id}/update(id=${patient.id})}" method="post" enctype="multipart/form-data" th:object="${patient}" style="margin: 10px 50px 10px;">
+
+                <input type="hidden" th:field="*{id}" />
+
+                <div class="p-3">
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="lastName">Last Name</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{lastName}" required minlength="2" maxlength="256" class="form-control"
+                                   id="lastName" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="firstName">First Name</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{firstName}" required minlength="2" maxlength="256" class="form-control"
+                                   id="firstName" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="dateOfBirth">Date Of Birth</label>
+                        <div class="col-10">
+                            <input type="date" step="1" th:field="*{dateOfBirth}" required
+                                   class="form-control" id="dateOfBirth" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 form-check-label" for="gender">Gender</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{gender}" required pattern="M|F"
+                                   class="form-control" id="gender" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 form-check-label" for="address">Address</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{address}" required
+                                   class="form-control" id="address" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 form-check-label" for="phoneNumber">Phone Number</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{phoneNumber}" required
+                                   class="form-control" id="phoneNumber" />
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-flex flex-row-reverse">
+                        <a th:href="@{/patients/view(id=${patient.id})}" class="btn btn-danger">Cancel</a>
+                        <input type="submit" value="Save" class="btn btn-primary me-2" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</html>

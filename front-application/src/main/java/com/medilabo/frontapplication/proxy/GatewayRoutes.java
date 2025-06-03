@@ -15,4 +15,10 @@ public class GatewayRoutes {
 
     @Value("${patients-view-uri}")
     private String patientViewUri;
+
+    @Value("${patients-update-uri}")
+    private String patientUpdateUri;
+
+    @Value("${patients-create-uri}")
+    private String patientCreateUri;
 }

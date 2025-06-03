@@ -2,6 +2,7 @@ package com.medilabo.patientapplication.controller;
 
 import com.medilabo.patientapplication.model.Patient;
 import com.medilabo.patientapplication.service.PatientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequestMapping("/patients")
 public class PatientController {
     private final PatientService patientService;
-
-    private static final Logger log = LoggerFactory.getLogger(PatientController.class);
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
