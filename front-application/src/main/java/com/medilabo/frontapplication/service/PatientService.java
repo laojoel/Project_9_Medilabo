@@ -67,4 +67,15 @@ public class PatientService {
         );
         return responseEntity.getBody();
     }
+
+    public Patient deletePatientId(long id) {
+        log.info("delete patients id " + id + " | " + routes.getPatientDeleteUri()+"/"+id);
+        ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
+                routes.getPatientDeleteUri()+"/"+id,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Patient>() {}
+        );
+        return responseEntity.getBody();
+    }
 }

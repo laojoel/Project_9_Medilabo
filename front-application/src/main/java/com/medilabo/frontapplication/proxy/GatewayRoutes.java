@@ -21,4 +21,7 @@ public class GatewayRoutes {
 
     @Value("${patients-create-uri}")
     private String patientCreateUri;
+
+    @Value("${patients-delete-uri}")
+    private String patientDeleteUri;
 }

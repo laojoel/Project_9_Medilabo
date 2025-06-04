@@ -72,5 +72,12 @@ public class PatientController {
         return "patientView";
     }
 
+    @GetMapping("/delete")
+    public String patientDelete(@RequestParam("id") Long id, Model model) {
+        log.info("Delete patient ID " + id + " info");
+        model.addAttribute("patient", patientService.getPatientId(id));
+        return "patientUpdate";
+    }
+
 
 }
