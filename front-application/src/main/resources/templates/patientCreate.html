@@ -10,31 +10,35 @@
     <main class="container">
         <h1>CREATE NEW PATIENT</h1><br>
         <div class="card">
-            <form th:action="@{/patient/create}" th:object="${patient}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
+            <form th:action="@{/patients/create}" th:object="${patient}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
 
                 <div class="p-3">
-                    <div class="form-group row">
-                        <label class="col-2 col-form-label" for="lastName">Last Name</label>
-                        <div class="col-10">
-                            <input type="text" th:field="*{lastName}" required minlength="2" maxlength="256" class="form-control"
-                                   id="lastName" />
-                        </div>
-                    </div>
-                    <br>
                     <div class="form-group row">
                         <label class="col-2 col-form-label" for="firstName">First Name</label>
                         <div class="col-10">
                             <input type="text" th:field="*{firstName}" required minlength="2" maxlength="256" class="form-control"
                                    id="firstName" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
                         </div>
                     </div>
                     <br>
                     <div class="form-group row">
-                        <label class="col-2 col-form-label" for="birthDate">Date of Birth</label>
+                        <label class="col-2 col-form-label" for="lastName">Last Name</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{lastName}" required minlength="2" maxlength="256" class="form-control"
+                                   id="lastName" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="dateOfBirth">Date of Birth</label>
                         <div class="col-10">
                             <input type="date" step="1" th:field="*{dateOfBirth}" required
-                                   class="form-control" id="birthDate"/>
+                                   class="form-control" id="dateOfBirth"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
                         </div>
+
                     </div>
                     <br>
                     <div class="form-group row">
@@ -42,6 +46,7 @@
                         <div class="col-10">
                             <input type="text" th:field="*{gender}" required pattern="M|F|?"
                                    class="form-control" id="gender"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                         </div>
                     </div>
                     <br>
@@ -49,6 +54,7 @@
                         <label class="col-2 form-check-label" for="address">Address</label>
                         <div class="col-10">
                             <input type="text" th:field="*{address}" required class="form-control" id="address"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
                         </div>
                     </div>
                     <br>
@@ -56,11 +62,12 @@
                         <label class="col-2 form-check-label" for="phoneNumber">Phone Number</label>
                         <div class="col-10">
                             <input type="text" th:field="*{phoneNumber}" required class="form-control" id="phoneNumber"/>
+                            <p class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
                         </div>
                     </div>
                     <br>
                     <div class="d-flex flex-row-reverse">
-                        <a th:href="@{/patients/view(id=${patient.id})}" class="btn btn-danger">Cancel</a>
+                        <a href="/patients" class="btn btn-danger">Cancel</a>
                         <input type="submit" value="Create" class="btn btn-primary me-2" />
                     </div>
                 </div>

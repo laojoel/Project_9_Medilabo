@@ -34,4 +34,16 @@ public class PatientService {
         }
         return patients.get();
     }
+
+    public Patient update(Patient patient) {
+        if (!patientRepository.existsById((int)patient.getId())) {
+            log.error("Patient with id " + patient.getId() + " not found for update");
+            return null;
+        }
+        return patientRepository.save(patient);
+    }
+
+    public Patient create(Patient patient) {
+        return patientRepository.save(patient);
+    }
 }

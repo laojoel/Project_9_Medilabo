@@ -7,26 +7,28 @@
         <link rel="stylesheet" type="text/css" href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
     </head>
     <main class="container">
-        <h1>EDIT PATIENT</h1><br>
+        <h1>UPDATE PATIENT</h1><br>
         <div class="card">
-            <form th:action="@{/patient/{id}/update(id=${patient.id})}" method="post" enctype="multipart/form-data" th:object="${patient}" style="margin: 10px 50px 10px;">
+            <form th:action="@{/patients/update(id=${patient.id})}" method="post" enctype="multipart/form-data" th:object="${patient}" style="margin: 10px 50px 10px;">
 
                 <input type="hidden" th:field="*{id}" />
 
                 <div class="p-3">
                     <div class="form-group row">
-                        <label class="col-2 col-form-label" for="lastName">Last Name</label>
-                        <div class="col-10">
-                            <input type="text" th:field="*{lastName}" required minlength="2" maxlength="256" class="form-control"
-                                   id="lastName" />
-                        </div>
-                    </div>
-                    <br>
-                    <div class="form-group row">
                         <label class="col-2 col-form-label" for="firstName">First Name</label>
                         <div class="col-10">
                             <input type="text" th:field="*{firstName}" required minlength="2" maxlength="256" class="form-control"
                                    id="firstName" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <label class="col-2 col-form-label" for="lastName">Last Name</label>
+                        <div class="col-10">
+                            <input type="text" th:field="*{lastName}" required minlength="2" maxlength="256" class="form-control"
+                                   id="lastName" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
                         </div>
                     </div>
                     <br>
@@ -35,6 +37,7 @@
                         <div class="col-10">
                             <input type="date" step="1" th:field="*{dateOfBirth}" required
                                    class="form-control" id="dateOfBirth" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></p>
                         </div>
                     </div>
                     <br>
@@ -43,6 +46,7 @@
                         <div class="col-10">
                             <input type="text" th:field="*{gender}" required pattern="M|F"
                                    class="form-control" id="gender" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                         </div>
                     </div>
                     <br>
@@ -51,6 +55,7 @@
                         <div class="col-10">
                             <input type="text" th:field="*{address}" required
                                    class="form-control" id="address" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
                         </div>
                     </div>
                     <br>
@@ -59,6 +64,7 @@
                         <div class="col-10">
                             <input type="text" th:field="*{phoneNumber}" required
                                    class="form-control" id="phoneNumber" />
+                            <p class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
                         </div>
                     </div>
                     <br>

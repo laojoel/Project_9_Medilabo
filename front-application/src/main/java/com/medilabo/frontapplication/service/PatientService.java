@@ -5,8 +5,7 @@ import com.medilabo.frontapplication.proxy.GatewayRoutes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,23 +42,27 @@ public class PatientService {
         );
         return responseEntity.getBody();
     }
-    public Patient updatePatientId(long id) { // NOT SURE IF IT WORKS, TODO: TO GO BACK HERE
-        log.info("update detail patients id " + id + " | " + routes.getPatientViewUri()+"/"+id);
+    public Patient updatePatient(Patient patient) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientUpdateUri()+"/"+id,
-                HttpMethod.GET,
-                null,
+                routes.getPatientUpdateUri()+"/"+patient.getId(),
+                HttpMethod.POST,
+                new HttpEntity<>(patient, headers),
                 new ParameterizedTypeReference<Patient>() {}
         );
         return responseEntity.getBody();
     }
 
     public Patient createPatient(Patient patient) {
-        log.info("create new patients " + patient + " | " + routes.getPatientCreateUri());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
                 routes.getPatientCreateUri(),
-                HttpMethod.GET,
-                null,
+                HttpMethod.POST,
+                new HttpEntity<>(patient, headers),
                 new ParameterizedTypeReference<Patient>() {}
         );
         return responseEntity.getBody();

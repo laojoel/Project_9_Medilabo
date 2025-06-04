@@ -34,23 +34,22 @@ public class PatientController {
         return "patientView";
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/update")
     public String patientEdit(@RequestParam("id") Long id, Model model) {
         log.info("Modify patient ID " + id + " info");
         model.addAttribute("patient", patientService.getPatientId(id));
-        return "patientEdit";
+        return "patientUpdate";
     }
 
-    @PostMapping("/edit")
-    public String patientEdit(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model, HttpServletRequest request) {
-
+    @PostMapping("/update")
+    public String patientUpdate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
+        System.out.println("POST patientUpdate | Entry point");
         if (result.hasErrors()) {
             log.warn("patient modification form has incorrect entries");
-           return "patientEdit";
+           return "patientUpdate";
         }
-
-        log.info("Modify patient ID " + patient.getId() + " info");
-        model.addAttribute("patient",  patient.getId());
+        patientService.updatePatient(patient);
+        model.addAttribute("patient",  patient);
         return "patientView";
     }
 
@@ -62,14 +61,14 @@ public class PatientController {
     }
 
     @PostMapping("/create")
-    public String patientCreate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model, HttpServletRequest request) {
-
+    public String patientCreate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result,
+                                Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
             log.warn("patient creation form has incorrect entries");
             return "patientCreate";
         }
-        //log.info("Create patient ID " + patient.getId() + " info");
-        model.addAttribute("patient",  patient.getId());
+        patientService.createPatient(patient);
+        model.addAttribute("patient",  patient);
         return "patientView";
     }
 

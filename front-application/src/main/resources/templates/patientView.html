@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Patients Case</title>
     <link rel="stylesheet" type="text/css" href="../../webjars/bootstrap/5.2.3/css/bootstrap.min.css"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-
 </head>
     <main class="container">
         <div class="row">
@@ -14,7 +12,8 @@
                 <h1><span th:text="${patient.firstName}"></span> <span th:text="${patient.lastName}"></span>'s case</h1>
             </div>
             <div class="col-12">
-                <a th:href="@{/patients/edit(id=${patient.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/patients/update(id=${patient.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/patients/delete(id=${patient.id})}" class="btn btn-danger">Delete</a>
                 <a th:href="@{/patients}" class="btn btn-secondary">Back</a>
             </div>
         </div>

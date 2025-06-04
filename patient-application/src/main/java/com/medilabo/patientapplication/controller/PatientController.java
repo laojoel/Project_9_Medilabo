@@ -8,10 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,10 +28,24 @@ public class PatientController {
     }
 
 
-        @GetMapping("/view/{id}")
+    @GetMapping("/view/{id}")
     public ResponseEntity<Patient> patientId(@PathVariable("id") Long id) {
-        System.out.println("Signal View ID " + id);
+        System.out.println("View ID " + id);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(patientService.getById(id.intValue()));
+    }
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity<Patient> update(@RequestBody Patient patient) {
+        System.out.println("Updating ID " + patient.getId());
+        Patient updatedPatient = patientService.update(patient);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Patient> create(@RequestBody Patient patient) {
+        System.out.println("Creating " + patient.getFirstName() + " " + patient.getLastName());
+        Patient createdPatient = patientService.create(patient);
+        return ResponseEntity.status(HttpStatus.OK).body(createdPatient);
     }
 
 }

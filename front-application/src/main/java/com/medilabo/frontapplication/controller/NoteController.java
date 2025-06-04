@@ -29,5 +29,4 @@ public class NoteController {
         return "noteView";
     }
 
-
 }

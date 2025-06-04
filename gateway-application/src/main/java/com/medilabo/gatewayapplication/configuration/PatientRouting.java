@@ -9,19 +9,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PatientRouting {
 
-    @Value("${patient-all-uri}")
+    @Value("${patient-uri}patients")
     private String patientAllUri;
 
     @Value("${patient-uri}patients/view/1")
-    private String patientUri;
+    private String patientViewUri;
+    @Value("${patient-uri}patients/create")
+    private String patientCreate;
+
+    @Value("${patient-uri}patients/create")
+    private String patientUpdate;
 
     @Bean
     public RouteLocator patientRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
                 .route(r -> r.path("/patients").filters(f -> f.filter(filter)).uri(patientAllUri))
-                .route(r -> r.path("/patients/view/{id}").filters(f -> f.filter(filter)).uri(patientUri))
-                //.route(r -> r.path("/patients/view/{id}").filters(f -> f.rewritePath("/patients/view/(?<id>.*)", "/patients/view/${id}").filter(filter)).uri(patientUri))
+                .route(r -> r.path("/patients/view/{id}").filters(f -> f.filter(filter)).uri(patientViewUri))
+                .route(r -> r.path("/patients/create").filters(f -> f.filter(filter)).uri(patientCreate))
+                .route(r -> r.path("/patients/update/{id}").filters(f -> f.filter(filter)).uri(patientUpdate))
                 .build();
     }
 
