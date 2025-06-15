@@ -1,5 +1,6 @@
 package com.medilabo.frontapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class Note {
     @Size(min = 4, message = "full name must be 4 characters long or more")
     private String patient;
 
+    @JsonProperty("note")
     @Size(min = 1, message = "note cannot be empty")
     private String content;
 }

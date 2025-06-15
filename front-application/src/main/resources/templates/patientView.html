@@ -45,20 +45,20 @@
 
         <a th:href="@{/notes/create(patId=${patient.id})}" class="btn btn-primary" style="margin-top: 20px">new note</a>
 
-        <div th:if="${patient.notes == null || patient.notes.isEmpty() }" class="alert alert-primary" role="alert" style="margin-top: 20px">
+        <div th:if="${notes == null || notes.isEmpty() }" class="alert alert-primary" role="alert" style="margin-top: 20px">
             void
         </div>
         <br>
         <br>
-        <table class="table table-striped" th:if="${patient.notes != null && !patient.notes.isEmpty()}">
+        <table class="table table-striped" th:if="${notes != null && !notes.isEmpty()}">
             <thead>
             <tr>
                 <th scope="col">Notes</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="note : ${patient.notes}">
-                <td th:text="${note}"></td>
+            <tr th:each="note : ${notes}">
+                <td th:text="${note.content}"></td>
             </tr>
             </tbody>
         </table>

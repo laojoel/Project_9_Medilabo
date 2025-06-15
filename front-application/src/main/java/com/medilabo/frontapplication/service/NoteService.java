@@ -32,6 +32,8 @@ public class NoteService {
                 null,
                 new ParameterizedTypeReference<List<Note>>() {}
         );
+        System.out.println("NOTES AAA | Count = " + responseEntity.getBody().size());
+        System.out.println("note content = " + responseEntity.getBody().get(0).getContent());
         return responseEntity.getBody();
     }
 
