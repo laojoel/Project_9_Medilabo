@@ -1,6 +1,7 @@
 package com.medilabo.frontapplication.controller;
 
 import com.medilabo.frontapplication.model.Patient;
+import com.medilabo.frontapplication.service.NoteService;
 import com.medilabo.frontapplication.service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PatientController {
 
-    private PatientService patientService;
+    private final PatientService patientService;
+    private final NoteService noteService;
 
-    public PatientController(PatientService patientService) {
+    public PatientController(PatientService patientService, NoteService noteService) {
         this.patientService = patientService;
+        this.noteService = noteService;
     }
 
     @GetMapping()
@@ -31,6 +34,7 @@ public class PatientController {
     public String patientView(@RequestParam("id") Long id, Model model) {
         log.info("Display patient ID " + id + " folder");
         model.addAttribute("patient", patientService.getPatientId(id));
+        model.addAttribute("notes", noteService.getAllNotesPatId(String.valueOf(id)));
         return "patientView";
     }
 

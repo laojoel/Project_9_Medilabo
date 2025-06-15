@@ -39,4 +39,9 @@ public class Patient {
     private String phoneNumber;
 
     private List<String> notes;
+
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

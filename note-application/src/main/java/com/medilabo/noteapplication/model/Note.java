@@ -11,9 +11,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Note {
     @Id
-    private String patId;
+    private String id;
+    private String note;
+    private int patId;
     private String patient;
-    private List<String> notes;
 }
