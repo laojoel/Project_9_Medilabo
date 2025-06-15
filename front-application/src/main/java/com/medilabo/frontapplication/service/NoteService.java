@@ -24,20 +24,18 @@ public class NoteService {
         this.routes = routes;
     }
 
-    public List<Note> getAllNotesPatId(String patId) {
+    public List<Note> getAllNotesPatId(long patId) {
         log.info("fetch note patId");
         ResponseEntity<List<Note>> responseEntity = authRestTemplate.exchange(
-                routes.getAllNotesUri()+"/"+patId,
+                routes.getAllNotesUri()+"/"+(int)patId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Note>>() {}
         );
-        System.out.println("NOTES AAA | Count = " + responseEntity.getBody().size());
-        System.out.println("note content = " + responseEntity.getBody().get(0).getContent());
         return responseEntity.getBody();
     }
 
-    public Note getNotePatId(String patId) {
+    public Note getNoteId(String patId) {
         log.info("fetch note patId");
         ResponseEntity<Note> responseEntity = authRestTemplate.exchange(
                 routes.getNoteViewUri()+"/"+patId,

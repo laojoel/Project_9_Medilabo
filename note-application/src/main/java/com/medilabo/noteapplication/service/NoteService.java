@@ -20,10 +20,6 @@ public class NoteService {
 
     public List<Note> getAllByPatId(int patId) {
         List<Note> notes = noteRepository.findAllByPatId(patId);
-        System.out.println("Notes Count = " + notes.size());
-        System.out.println("Note Content = " + notes.getFirst().getNote());
-        System.out.println("Note patient = " + notes.getFirst().getPatient());
-        System.out.println("Note _id = " + notes.getFirst().getId());
         return notes;
     }
 

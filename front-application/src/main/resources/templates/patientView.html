@@ -59,6 +59,10 @@
             <tbody>
             <tr th:each="note : ${notes}">
                 <td th:text="${note.content}"></td>
+                <td>
+                    <a th:href="@{/notes/update(id=${note.id})}">Edit</a>
+                    <a th:href="@{/notes/delete{id}(id=${note.id})}">Delete</a>
+                </td>
             </tr>
             </tbody>
         </table>

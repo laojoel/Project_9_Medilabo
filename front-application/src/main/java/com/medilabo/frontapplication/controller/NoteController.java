@@ -25,15 +25,8 @@ public class NoteController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/view")
-    public String dossierPatient(@RequestParam("patId") String patId, Model model) {
-        log.info("Display patient ID " + patId + " folder");
-        model.addAttribute("note", noteService.getNotePatId(patId));
-        return "noteView";
-    }
-
     @GetMapping("/create")
-    public String patientCreate(@RequestParam("patId") Long patId, Model model) {
+    public String noteCreate(@RequestParam("patId") Long patId, Model model) {
         Patient patient = patientService.getPatientId(patId);
         if (patient==null) {
             log.error("create note for null patient, redirect to list");
@@ -50,26 +43,39 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String patientCreate(@Valid @ModelAttribute("note") Note note, BindingResult result,
+    public String noteCreate(@Valid @ModelAttribute("note") Note note, BindingResult result,
                                 Model model, HttpServletRequest request) {
-
-
         if (result.hasErrors()) {
             log.warn("note creation form has incorrect entries");
             return "noteCreate";
         }
-
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        System.out.println("Create Note for PID " + note.getPatId() + " | fullName = " + note.getPatient() +
-                " | note content = " + note.getContent());
-
         noteService.create(note);
-        Patient patient = patientService.getPatientId(note.getPatId());
-
-        model.addAttribute("patient",  patient);
+        long patId = note.getPatId();
+        model.addAttribute("patient",  patientService.getPatientId(patId));
+        model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
         return "patientView";
     }
 
+    @GetMapping("/update")
+    public String noteUpdate(@RequestParam("id") String id, Model model) {
+        log.info("Display note ID " + id);
+        model.addAttribute("note", noteService.getNoteId(id));
+        return "noteUpdate";
+    }
+
+    @PostMapping("/update")
+    public String noteUpdate(@Valid @ModelAttribute("note") Note note, BindingResult result,
+                                Model model, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            log.warn("note update form has incorrect entries");
+            return "noteUpdate";
+        }
+        noteService.create(note);
+        long patId = note.getPatId();
+        model.addAttribute("patient",  patientService.getPatientId(patId));
+        model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
+        return "patientView";
+    }
 
 
 

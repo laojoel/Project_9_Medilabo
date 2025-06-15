@@ -34,7 +34,7 @@ public class PatientController {
     public String patientView(@RequestParam("id") Long id, Model model) {
         log.info("Display patient ID " + id + " folder");
         model.addAttribute("patient", patientService.getPatientId(id));
-        model.addAttribute("notes", noteService.getAllNotesPatId(String.valueOf(id)));
+        model.addAttribute("notes", noteService.getAllNotesPatId(id));
         return "patientView";
     }
 

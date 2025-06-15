@@ -25,7 +25,6 @@ public class NoteController {
     @GetMapping("/{patId}")
     public ResponseEntity<List<Note>> notesPatient(@PathVariable("patId") int patId) {
         log.info("get notes for patient ID {}", patId);
-        System.out.println("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(noteService.getAllByPatId(patId));
     }
 
@@ -37,7 +36,6 @@ public class NoteController {
 
     @PostMapping("/create")
     public ResponseEntity<Note> create(@RequestBody Note note) {
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         log.info("Creating Note for Patient ID: " + note.getPatId() + " (" + note.getPatient() +")");
         Note createdNote = noteService.create(note);
         return ResponseEntity.status(HttpStatus.OK).body(createdNote);
