@@ -7,16 +7,20 @@ import com.medilabo.frontapplication.service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static com.medilabo.frontapplication.constant.ExecutionConstant.GENERIC_DELETION_ERROR;
+import static com.medilabo.frontapplication.constant.ExecutionConstant.GENERIC_ERROR;
+
 @Slf4j
 @RequestMapping("/notes")
 @Controller
 public class NoteController {
-
     private final NoteService noteService;
     private final PatientService patientService;
 
@@ -26,7 +30,7 @@ public class NoteController {
     }
 
     @GetMapping("/create")
-    public String noteCreate(@RequestParam("patId") Long patId, Model model) {
+    public String create(@RequestParam("patId") Long patId, Model model) {
         Patient patient = patientService.getPatientId(patId);
         if (patient==null) {
             log.error("create note for null patient, redirect to list");
@@ -43,7 +47,7 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String noteCreate(@Valid @ModelAttribute("note") Note note, BindingResult result,
+    public String create(@Valid @ModelAttribute("note") Note note, BindingResult result,
                                 Model model, HttpServletRequest request) {
         if (result.hasErrors()) {
             log.warn("note creation form has incorrect entries");
@@ -57,21 +61,35 @@ public class NoteController {
     }
 
     @GetMapping("/update")
-    public String noteUpdate(@RequestParam("id") String id, Model model) {
+    public String update(@RequestParam("id") String id, Model model) {
         log.info("Display note ID " + id);
         model.addAttribute("note", noteService.getNoteId(id));
         return "noteUpdate";
     }
 
     @PostMapping("/update")
-    public String noteUpdate(@Valid @ModelAttribute("note") Note note, BindingResult result,
-                                Model model, HttpServletRequest request) {
+    public String update(@Valid @ModelAttribute("note") Note note, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            log.warn("note update form has incorrect entries");
             return "noteUpdate";
         }
-        noteService.create(note);
+        if (!noteService.update(note)) {
+            model.addAttribute("error", GENERIC_ERROR);
+            return "noteUpdate";
+        }
         long patId = note.getPatId();
+        model.addAttribute("patient",  patientService.getPatientId(patId));
+        model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
+        return "patientView";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@Valid @ModelAttribute("id") String id, @RequestParam("patId") long patId, Model model) {
+        if(noteService.delete(id)) {
+            model.addAttribute("message", "note has been successfully deleted");
+        }
+        else {
+            model.addAttribute("error", GENERIC_DELETION_ERROR);
+        }
         model.addAttribute("patient",  patientService.getPatientId(patId));
         model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
         return "patientView";

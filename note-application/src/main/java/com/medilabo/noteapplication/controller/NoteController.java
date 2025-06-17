@@ -30,22 +30,42 @@ public class NoteController {
 
     @GetMapping("/view/{id}")
     public ResponseEntity<Note> noteId(@PathVariable("id") String id) {
-        log.info("get note ID {}", id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(noteService.getById(id));
+        Note note = noteService.getById(id);
+        if (note == null) {
+            log.error("View Note ID: " + id + " | Failed for reason: Not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        log.info("View note ID " + id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(note);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Note> create(@RequestBody Note note) {
         log.info("Creating Note for Patient ID: " + note.getPatId() + " (" + note.getPatient() +")");
         Note createdNote = noteService.create(note);
+        if (createdNote == null) {return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();}
         return ResponseEntity.status(HttpStatus.OK).body(createdNote);
     }
 
     @PostMapping("/update")
     public ResponseEntity<Note> update(@RequestBody Note note) {
-        log.info("Create Note from Patient ID: " + note.getPatId() + " (" + note.getPatient() +")");
         Note updatedNote = noteService.update(note);
+        if (updatedNote == null) {
+            log.error("Update Note ID: " + note.getId() + " | Failed for reason: Not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+        else if (!updatedNote.getNote().equals(note.getNote())) {
+            log.error("Update Note ID: " + note.getId() + " | Failed At database level");
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();}
+
+        log.info("Update Note ID: " + note.getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedNote);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Note> delete(@PathVariable("id") String id) {
+        if(noteService.delete(id)) {return ResponseEntity.status(HttpStatus.OK).build();}
+        else {return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+
     }
 
 

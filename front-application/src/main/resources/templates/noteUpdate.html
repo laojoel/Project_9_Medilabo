@@ -16,18 +16,22 @@
 		<h4>Update Note</h4>
 		<h2><span th:text="${note.patient}"></span></h2>
 	</div>
-
 	<div class="mx-4 p-4">
-		<form th:action="@{/notes/create}" th:object="${note}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
+		<div th:if="${error}" class="d-flex justify-content-center col-sm-10 mb-3">
+			<p class="text-danger text-center" th:text="${error}"></p>
+		</div>
+
+		<form th:action="@{/notes/update}" th:object="${note}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
 			<div class="mx-2 p-2">
 				<input type="hidden" th:field="*{patient}" />
 				<input type="hidden" th:field="*{patId}" />
+				<input type="hidden" th:field="*{id}" />
 
 				<textarea rows="10" class="form-control" id="content" name="content"
 					placeholder="Enter content" th:field="*{content}"></textarea>
 			</div>
 			<div>
-				<button type="submit" class="btn btn-outline-info btn-lg">Create</button>
+				<button type="submit" class="btn btn-outline-info btn-lg">Update</button>
 				<a th:href="@{/patients/view(id=${note.patId})}" class="btn btn-outline-info btn-lg">Cancel</a>
 			</div>
 		</form>

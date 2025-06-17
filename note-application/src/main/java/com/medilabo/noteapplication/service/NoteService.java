@@ -24,12 +24,8 @@ public class NoteService {
     }
 
     public Note getById(String id) {
-        Optional<Note> patients = noteRepository.findById(id);
-        if (patients.isEmpty()) {
-            log.error("note id " + id + " not found");
-            return null;
-        }
-        return patients.get();
+        Optional<Note> note = noteRepository.findById(id);
+        return note.orElse(null);
     }
 
     public Note create(Note note) {
@@ -38,9 +34,13 @@ public class NoteService {
 
     public Note update(Note note) {
         if (!noteRepository.existsById(note.getId())) {
-            log.error("note with id " + note.getId() + " not found for update");
             return null;
         }
         return noteRepository.save(note);
+    }
+
+    public boolean delete(String id) {
+        noteRepository.deleteById(id);
+        return !noteRepository.existsById(id);
     }
 }

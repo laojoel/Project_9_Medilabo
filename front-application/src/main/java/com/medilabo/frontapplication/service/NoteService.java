@@ -1,14 +1,13 @@
 package com.medilabo.frontapplication.service;
 
 import com.medilabo.frontapplication.model.Note;
-import com.medilabo.frontapplication.model.Patient;
-import com.medilabo.frontapplication.proxy.GatewayRoutes;
 import com.medilabo.frontapplication.proxy.NoteRoutes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -57,5 +56,37 @@ public class NoteService {
                 new ParameterizedTypeReference<Note>() {}
         );
         return responseEntity.getBody();
+    }
+
+    public boolean update(Note note) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        try {
+            authRestTemplate.exchange(
+                    routes.getNoteUpdateUri(),
+                    HttpMethod.POST,
+                    new HttpEntity<>(note, headers),
+                    new ParameterizedTypeReference<Void>() {}
+            );
+            return true;
+        }
+        catch (HttpClientErrorException e) {
+            return false;
+        }
+    }
+
+    public boolean delete(String id) {
+        try {
+            authRestTemplate.exchange(
+                    routes.getNoteDeleteUri() + "/" + id,
+                    HttpMethod.DELETE,
+                    null,
+                    Void.class);
+            return true;
+        }
+        catch (HttpClientErrorException e) {
+            return false;
+        }
     }
 }

@@ -1,25 +1,3 @@
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050; /* Ensure it's above other content */
-    display: none; /* Initially hide the modal */
-}
-.modal-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-}
-.modal-dialog-centered {
-    z-index: 1060; /* Ensure it's above the background */
-}
 
 .patients-Table:hover {
     color: red;
@@ -36,4 +14,9 @@
      top: 0;
      left: 0;
      z-index: 1040;
+}
+
+.note-tb-right-area {
+    text-align: right;
+    white-space: nowrap;
 }
