@@ -55,6 +55,7 @@ public class PatientService {
         return responseEntity.getBody();
     }
 
+
     public Patient createPatient(Patient patient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -67,6 +68,7 @@ public class PatientService {
         );
         return responseEntity.getBody();
     }
+
 
     public Patient deletePatientId(long id) {
         log.info("delete patients id " + id + " | " + routes.getPatientDeleteUri()+"/"+id);
