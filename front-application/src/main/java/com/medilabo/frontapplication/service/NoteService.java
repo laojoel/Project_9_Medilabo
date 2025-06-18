@@ -1,7 +1,7 @@
 package com.medilabo.frontapplication.service;
 
+import com.medilabo.frontapplication.configuration.GatewayProperties;
 import com.medilabo.frontapplication.model.Note;
-import com.medilabo.frontapplication.proxy.NoteRoutes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -15,10 +15,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class NoteService {
-    private final RestTemplate authRestTemplate;
-    private final NoteRoutes routes;
+    private final RestTemplate      authRestTemplate;
+    private final GatewayProperties routes;
 
-    public NoteService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, NoteRoutes routes) {
+    public NoteService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayProperties routes) {
         this.authRestTemplate = authRestTemplate;
         this.routes = routes;
     }

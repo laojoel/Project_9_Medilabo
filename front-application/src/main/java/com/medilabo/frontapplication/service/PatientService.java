@@ -1,7 +1,7 @@
 package com.medilabo.frontapplication.service;
 
+import com.medilabo.frontapplication.configuration.GatewayProperties;
 import com.medilabo.frontapplication.model.Patient;
-import com.medilabo.frontapplication.proxy.GatewayRoutes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 @Slf4j
 public class PatientService {
-    private final RestTemplate authRestTemplate;
-    private final GatewayRoutes routes;
+    private final RestTemplate      authRestTemplate;
+    private final GatewayProperties routes;
 
-    public PatientService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayRoutes routes) {
+    public PatientService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayProperties routes) {
         this.authRestTemplate = authRestTemplate;
         this.routes = routes;
     }
@@ -55,7 +55,6 @@ public class PatientService {
         return responseEntity.getBody();
     }
 
-
     public Patient createPatient(Patient patient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -68,7 +67,6 @@ public class PatientService {
         );
         return responseEntity.getBody();
     }
-
 
     public Patient deletePatientId(long id) {
         log.info("delete patients id " + id + " | " + routes.getPatientDeleteUri()+"/"+id);
