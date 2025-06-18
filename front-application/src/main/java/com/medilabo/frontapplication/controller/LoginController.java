@@ -1,8 +1,8 @@
 package com.medilabo.frontapplication.controller;
 
 
+import com.medilabo.frontapplication.configuration.GatewayProperties;
 import com.medilabo.frontapplication.model.LoginForm;
-import com.medilabo.frontapplication.proxy.GatewayRoutes;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +18,10 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class LoginController {
 
-    private final RestTemplate restTemplate;
-    private final GatewayRoutes properties;
+    private final RestTemplate      restTemplate;
+    private final GatewayProperties properties;
 
-    public LoginController(@Qualifier("restTemplate") RestTemplate restTemplate, GatewayRoutes properties) {
+    public LoginController(@Qualifier("restTemplate") RestTemplate restTemplate, GatewayProperties properties) {
         this.restTemplate = restTemplate;
         this.properties = properties;
     }
