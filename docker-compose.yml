@@ -36,6 +36,17 @@ services:
     networks:
       - intra-network
 
+  risk-application: #-------------------------------------------------- risk application
+    build: ./risk-application
+    image: risk-application
+    container_name: risk-application
+    ports:
+      - 18082:8084
+    environment:
+      GATEWAY_APPLICATION_URI: gateway-application:8080
+    networks:
+      - intra-network
+
   patient-application: #------------------------------------------------ patient application
     build: ./patient-application
     image: patient-application
@@ -83,6 +94,22 @@ services:
     volumes:
       - patientDatabase:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  note-application: #------------------------------------------------ note application
+    build: ./note-application
+    image: note-application
+    container_name: note-application
+    depends_on:
+      patient-database:
+        condition: service_healthy
+    ports:
+      - 18081:8083
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:3306/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: TestPassword
+    networks:
+      - intra-network
 
 networks: #--------------------------------------------------------------- network & volume database
   intra-network:
