@@ -38,21 +38,21 @@ public class PatientController {
         return "patientView";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/modify")
     public String patientEdit(@RequestParam("id") Long id, Model model) {
         log.info("Modify patient ID " + id + " info");
         model.addAttribute("patient", patientService.getPatientId(id));
         return "patientUpdate";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/modify")
     public String patientUpdate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
         System.out.println("POST patientUpdate | Entry point");
         if (result.hasErrors()) {
             log.warn("patient modification form has incorrect entries");
            return "patientUpdate";
         }
-        patientService.updatePatient(patient);
+        patientService.modify(patient);
         model.addAttribute("patient",  patient);
         return "patientView";
     }
@@ -71,7 +71,7 @@ public class PatientController {
             log.warn("patient creation form has incorrect entries");
             return "patientCreate";
         }
-        patientService.createPatient(patient);
+        patientService.create(patient);
         model.addAttribute("patient",  patient);
         return "patientView";
     }
@@ -79,6 +79,7 @@ public class PatientController {
     @GetMapping("/delete")
     public String patientDelete(@RequestParam("id") Long id, Model model) {
         log.info("Delete patient ID " + id + " info");
+        patientService.delete(id);
         model.addAttribute("patient", patientService.getPatientId(id));
         return "patientUpdate";
     }

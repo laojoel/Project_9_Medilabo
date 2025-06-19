@@ -9,26 +9,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class NoteRouting {
 
-    @Value("${note-uri}notes/1")
-    private String noteAllUri;
-    @Value("${note-uri}notes/view/1")
-    private String noteViewUri;
-    @Value("${note-uri}notes/create")
-    private String noteCreateUri;
-    @Value("${note-uri}notes/update")
-    private String noteUpdateUri;
-    @Value("${note-uri}notes/delete")
-    private String noteDeleteUri;
+    @Value("${note-application-uri}/")
+    private String noteUri;
+    @Value("${note-application-uri}/patId")
+    private String patIdNotesUri;
+    @Value("${note-application-uri}/create")
+    private String noteCreationUri;
+    @Value("${note-application-uri}/modify")
+    private String noteModificationUrl;
+    @Value("${note-application-uri}/delete")
+    private String noteDeletionUri;
 
     @Bean
     public RouteLocator noteRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
-                .route(r -> r.path("/notes/{patId}").filters(f -> f.filter(filter)).uri(noteAllUri))
-                .route(r -> r.path("/notes/view/{id}").filters(f -> f.filter(filter)).uri(noteViewUri))
-                .route(r -> r.path("/notes/create").filters(f -> f.filter(filter)).uri(noteCreateUri))
-                .route(r -> r.path("/notes/update/{id}").filters(f -> f.filter(filter)).uri(noteUpdateUri))
-                .route(r -> r.path("/notes/delete/{id}").filters(f -> f.filter(filter)).uri(noteDeleteUri))
+                .route(r -> r.path("/note/{id}").filters(f -> f.filter(filter)).uri(noteUri))
+                .route(r -> r.path("/note/patId/{patId}").filters(f -> f.filter(filter)).uri(patIdNotesUri))
+                .route(r -> r.path("/note/create").filters(f -> f.filter(filter)).uri(noteCreationUri))
+                .route(r -> r.path("/note/modify").filters(f -> f.filter(filter)).uri(noteModificationUrl))
+                .route(r -> r.path("/note/delete/{id}").filters(f -> f.filter(filter)).uri(noteDeletionUri))
                 .build();
     }
 

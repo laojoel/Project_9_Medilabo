@@ -16,37 +16,37 @@ public class GatewayProperties {
 
     // patient application
 
-    @Value("${patients-uri}")
+    @Value("${patient-application-uri}/")
+    private String PatientUri;
+
+    @Value("${patient-application-uri}/all")
     private String allPatientUri;
 
-    @Value("${patients-view-uri}")
-    private String patientViewUri;
+    @Value("${patient-application-uri}/create")
+    private String patientCreationUri;
 
-    @Value("${patients-update-uri}")
-    private String patientUpdateUri;
+    @Value("${patient-application-uri}/modify")
+    private String patientModificationUri;
 
-    @Value("${patients-create-uri}")
-    private String patientCreateUri;
-
-    @Value("${patients-delete-uri}")
-    private String patientDeleteUri;
+    @Value("${patient-application-uri}/delete")
+    private String patientDeletionUri;
 
     // note application
 
-    @Value("${notes-uri}")
-    private String allNotesUri;
+    @Value("${note-application-uri}/")
+    private String noteUri;
 
-    @Value("${notes-view-uri}")
-    private String noteViewUri;
+    @Value("${note-application-uri}/patId")
+    private String patIdNotesUri;
 
-    @Value("${notes-create-uri}")
-    private String noteCreateUri;
+    @Value("${note-application-uri}/create")
+    private String noteCreationUri;
 
-    @Value("${notes-update-uri}")
-    private String noteUpdateUri;
+    @Value("${note-application-uri}/modify")
+    private String noteModificationUrl;
 
-    @Value("${notes-delete-uri}")
-    private String noteDeleteUri;
+    @Value("${note-application-uri}/delete")
+    private String noteDeletionUri;
 
     // risk application
 

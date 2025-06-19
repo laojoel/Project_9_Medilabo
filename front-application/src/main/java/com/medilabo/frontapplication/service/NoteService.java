@@ -26,21 +26,21 @@ public class NoteService {
     public List<Note> getAllNotesPatId(long patId) {
         log.info("fetch note patId");
         ResponseEntity<List<Note>> responseEntity = authRestTemplate.exchange(
-                routes.getAllNotesUri()+"/"+(int)patId,
+                routes.getPatIdNotesUri()+"/"+(int)patId,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Note>>() {}
+                new ParameterizedTypeReference<>() {}
         );
         return responseEntity.getBody();
     }
 
-    public Note getNoteId(String patId) {
+    public Note getNoteId(String id) {
         log.info("fetch note patId");
         ResponseEntity<Note> responseEntity = authRestTemplate.exchange(
-                routes.getNoteViewUri()+"/"+patId,
+                routes.getNoteUri()+"/"+id,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<Note>() {}
+                new ParameterizedTypeReference<>() {}
         );
         return responseEntity.getBody();
     }
@@ -50,10 +50,10 @@ public class NoteService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<Note> responseEntity = authRestTemplate.exchange(
-                routes.getNoteCreateUri(),
+                routes.getNoteCreationUri(),
                 HttpMethod.POST,
                 new HttpEntity<>(note, headers),
-                new ParameterizedTypeReference<Note>() {}
+                new ParameterizedTypeReference<>() {}
         );
         return responseEntity.getBody();
     }
@@ -64,7 +64,7 @@ public class NoteService {
 
         try {
             authRestTemplate.exchange(
-                    routes.getNoteUpdateUri(),
+                    routes.getNoteModificationUrl(),
                     HttpMethod.POST,
                     new HttpEntity<>(note, headers),
                     new ParameterizedTypeReference<Void>() {}
@@ -79,7 +79,7 @@ public class NoteService {
     public boolean delete(String id) {
         try {
             authRestTemplate.exchange(
-                    routes.getNoteDeleteUri() + "/" + id,
+                    routes.getNoteDeletionUri() + "/" + id,
                     HttpMethod.DELETE,
                     null,
                     Void.class);

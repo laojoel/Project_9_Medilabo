@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @Slf4j
-@RequestMapping("/patients")
+@RequestMapping("/patient")
 public class PatientController {
     private final PatientService patientService;
 
@@ -22,19 +22,19 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<Patient>> allPatients() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(patientService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.getAll());
     }
 
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Patient> patientId(@PathVariable("id") Long id) {
         System.out.println("View ID " + id);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(patientService.getById(id.intValue()));
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.getById(id.intValue()));
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/modify")
     public ResponseEntity<Patient> update(@RequestBody Patient patient) {
         System.out.println("Updating ID " + patient.getId());
         Patient updatedPatient = patientService.update(patient);

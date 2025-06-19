@@ -12,7 +12,7 @@
                 <h1><span th:text="${patient.firstName}"></span> <span th:text="${patient.lastName}"></span>'s case</h1>
             </div>
             <div class="col-12">
-                <a th:href="@{/patients/update(id=${patient.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/patients/modify(id=${patient.id})}" class="btn btn-primary">Edit</a>
                 <a th:href="@{/patients/delete(id=${patient.id})}" class="btn btn-danger">Delete</a>
                 <a th:href="@{/patients}" class="btn btn-secondary">Back</a>
             </div>
@@ -60,7 +60,7 @@
             <tr th:each="note : ${notes}">
                 <td th:text="${note.content}"></td>
                 <td class="note-tb-right-area">
-                    <a th:href="@{/notes/update(id=${note.id})}">Edit</a>
+                    <a th:href="@{/notes/modify(id=${note.id})}">Edit</a>
                     <a th:href="@{/notes/delete(id=${note.id}, patId=${note.patId})}">Delete</a>
                 </td>
             </tr>

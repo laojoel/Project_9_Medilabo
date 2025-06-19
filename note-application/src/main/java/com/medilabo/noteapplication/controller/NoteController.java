@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Controller
 @Slf4j
-@RequestMapping("/notes")
+@RequestMapping("/note")
 public class NoteController {
     private final NoteService noteService;
 
@@ -22,13 +22,7 @@ public class NoteController {
     }
 
 
-    @GetMapping("/{patId}")
-    public ResponseEntity<List<Note>> notesPatient(@PathVariable("patId") int patId) {
-        log.info("get notes for patient ID {}", patId);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(noteService.getAllByPatId(patId));
-    }
-
-    @GetMapping("/view/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Note> noteId(@PathVariable("id") String id) {
         Note note = noteService.getById(id);
         if (note == null) {
@@ -39,6 +33,12 @@ public class NoteController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(note);
     }
 
+    @GetMapping("/patId/{patId}")
+    public ResponseEntity<List<Note>> notesPatient(@PathVariable("patId") int patId) {
+        log.info("get notes for patient ID {}", patId);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(noteService.getAllByPatId(patId));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Note> create(@RequestBody Note note) {
         log.info("Creating Note for Patient ID: " + note.getPatId() + " (" + note.getPatient() +")");
@@ -47,7 +47,7 @@ public class NoteController {
         return ResponseEntity.status(HttpStatus.OK).body(createdNote);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/modify")
     public ResponseEntity<Note> update(@RequestBody Note note) {
         Note updatedNote = noteService.update(note);
         if (updatedNote == null) {

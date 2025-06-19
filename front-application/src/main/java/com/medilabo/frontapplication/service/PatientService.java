@@ -33,21 +33,21 @@ public class PatientService {
         return responseEntity.getBody();
     }
     public Patient getPatientId(long id) {
-        log.info("fetch detail patients id " + id + " | " + routes.getPatientViewUri()+"/"+id);
+        log.info("fetch detail patients id " + id);
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientViewUri()+"/"+id,
+                routes.getPatientUri()+"/"+id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Patient>() {}
         );
         return responseEntity.getBody();
     }
-    public Patient updatePatient(Patient patient) {
+    public Patient modify(Patient patient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientUpdateUri()+"/"+patient.getId(),
+                routes.getPatientModificationUri()+"/"+patient.getId(),
                 HttpMethod.POST,
                 new HttpEntity<>(patient, headers),
                 new ParameterizedTypeReference<Patient>() {}
@@ -55,12 +55,12 @@ public class PatientService {
         return responseEntity.getBody();
     }
 
-    public Patient createPatient(Patient patient) {
+    public Patient create(Patient patient) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientCreateUri(),
+                routes.getPatientCreationUri(),
                 HttpMethod.POST,
                 new HttpEntity<>(patient, headers),
                 new ParameterizedTypeReference<Patient>() {}
@@ -68,10 +68,10 @@ public class PatientService {
         return responseEntity.getBody();
     }
 
-    public Patient deletePatientId(long id) {
-        log.info("delete patients id " + id + " | " + routes.getPatientDeleteUri()+"/"+id);
+    public Patient delete(long id) {
+        log.info("delete patients id " + id);
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientDeleteUri()+"/"+id,
+                routes.getPatientDeletionUri()+"/"+id,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Patient>() {}

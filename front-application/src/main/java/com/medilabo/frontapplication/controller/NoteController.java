@@ -60,14 +60,14 @@ public class NoteController {
         return "patientView";
     }
 
-    @GetMapping("/update")
+    @GetMapping("/modify")
     public String update(@RequestParam("id") String id, Model model) {
         log.info("Display note ID " + id);
         model.addAttribute("note", noteService.getNoteId(id));
         return "noteUpdate";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/modify")
     public String update(@Valid @ModelAttribute("note") Note note, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "noteUpdate";
