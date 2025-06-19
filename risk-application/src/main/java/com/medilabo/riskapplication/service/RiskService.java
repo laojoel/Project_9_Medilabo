@@ -15,8 +15,8 @@ import static com.medilabo.riskapplication.enumeration.RiskLevelEnumeration.*;
 @RequiredArgsConstructor
 public class RiskService {
 
-    private NoteService noteService;
-    private PatientService patientService;
+    private final NoteService noteService;
+    private final PatientService patientService;
 
     public String riskEvaluation(long patId) {
         Patient patient = patientService.getPatientId(patId);

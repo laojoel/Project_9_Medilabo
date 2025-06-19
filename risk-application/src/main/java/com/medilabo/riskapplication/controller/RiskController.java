@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -15,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/risk")
 public class RiskController {
 
-    private RiskService riskService;
+    private final RiskService riskService;
 
     @GetMapping("/{patId}")
     public ResponseEntity<String> notesPatient(@PathVariable("patId") int patId) {

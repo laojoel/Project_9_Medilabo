@@ -50,7 +50,7 @@ public class GatewayProperties {
 
     // risk application
 
-    @Value("${risks-uri}")
+    @Value("${risk-application-uri}")
     private String riskUri;
 
 }

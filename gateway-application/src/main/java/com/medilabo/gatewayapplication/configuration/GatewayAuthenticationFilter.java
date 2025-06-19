@@ -9,6 +9,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +22,6 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class GatewayAuthenticationFilter implements GatewayFilter {
-
     private final RestTemplate restTemplate;
 
     public GatewayAuthenticationFilter(@Qualifier("restTemplate") RestTemplate restTemplate) {
@@ -45,13 +45,25 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
             }
 
             String authenticationHeader = Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
-            if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
+            if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {;
                 authenticationHeader = authenticationHeader.substring(7);
             }
 
             try {
+                System.out.println("\n\n\nChallenging Token: " + authenticationHeader);
                 boolean isValid = Boolean.TRUE.equals(restTemplate.getForObject(String.format(authenticationValidationUri, authenticationHeader), Boolean.class));
                 log.info("Token Validity " + isValid);
+
+                // If valid, forward the token to back-end services
+                if (isValid) {
+                    System.out.println("\n\n\nmutated author ------------------------------------------------------- \n" + authenticationHeader);
+                    ServerHttpRequest mutatedRequest = exchange.getRequest()
+                            .mutate()
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer " + authenticationHeader)
+                            .build();
+                    return chain.filter(exchange.mutate().request(mutatedRequest).build());
+                }
+
             } catch (Exception e) {
                 log.info("Invalid Token: " + e.getMessage());
                 ServerHttpResponse response = exchange.getResponse();
@@ -60,6 +72,7 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
             }
         }
         return chain.filter(exchange);
+
     }
 
 }

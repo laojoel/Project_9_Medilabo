@@ -1,5 +1,6 @@
 package com.medilabo.riskapplication.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 public class NoteService {
 
     private final GatewayProperties routes;
-    private final RestTemplate      restTemplate;
+    private final RestTemplate      authRestTemplate;
 
-    public NoteService(GatewayProperties routes, RestTemplate restTemplate) {
+    public NoteService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayProperties routes) {
         this.routes = routes;
-        this.restTemplate = restTemplate;
+        this.authRestTemplate = authRestTemplate;
     }
 
     public List<Note> getNotesPatId(long patId) {
         log.info("fetch notes from patient id " + patId);
-        ResponseEntity<List<Note>> responseEntity = restTemplate.exchange(
-                routes.getAllNotesUri()+"/"+patId,
+        ResponseEntity<List<Note>> responseEntity = authRestTemplate.exchange(
+                routes.getPatIdNotesUri()+"/"+patId,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<>() {}

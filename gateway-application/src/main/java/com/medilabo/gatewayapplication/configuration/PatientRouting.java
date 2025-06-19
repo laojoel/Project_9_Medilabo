@@ -27,7 +27,7 @@ public class PatientRouting {
                 .route(r -> r.path("/patient/{id}").filters         (f -> f.filter(filter)).uri(patientUri))
                 .route(r -> r.path("/patient/all").filters          (f -> f.filter(filter)).uri(allPatientsUri))
                 .route(r -> r.path("/patient/create").filters       (f -> f.filter(filter)).uri(patientCreationUri))
-                .route(r -> r.path("/patient/modify").filters  (f -> f.filter(filter)).uri(patientModificationUri))
+                .route(r -> r.path("/patient/modify").filters       (f -> f.filter(filter)).uri(patientModificationUri))
                 .route(r -> r.path("/patient/delete/{id}").filters  (f -> f.filter(filter)).uri(patientDeletionUri))
                 .build();
     }

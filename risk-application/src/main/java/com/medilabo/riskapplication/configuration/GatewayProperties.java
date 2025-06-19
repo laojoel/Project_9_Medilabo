@@ -8,9 +8,9 @@ import lombok.Data;
 @Component
 @Data
 public class GatewayProperties {
-    @Value("${patients-uri}/view")
-    private String patientViewUri;
+    @Value("${patient-application-uri}/")
+    private String patientUri;
 
-    @Value("${notes-uri}")
-    private String allNotesUri;
+    @Value("${note-application-uri}/patId")
+    private String patIdNotesUri;
 }

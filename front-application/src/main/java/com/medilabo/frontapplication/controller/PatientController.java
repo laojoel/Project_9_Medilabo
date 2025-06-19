@@ -3,6 +3,7 @@ package com.medilabo.frontapplication.controller;
 import com.medilabo.frontapplication.model.Patient;
 import com.medilabo.frontapplication.service.NoteService;
 import com.medilabo.frontapplication.service.PatientService;
+import com.medilabo.frontapplication.service.RiskService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +19,12 @@ public class PatientController {
 
     private final PatientService patientService;
     private final NoteService noteService;
+    private final RiskService riskService;
 
-    public PatientController(PatientService patientService, NoteService noteService) {
+    public PatientController(PatientService patientService, NoteService noteService, RiskService riskService) {
         this.patientService = patientService;
         this.noteService = noteService;
+        this.riskService = riskService;
     }
 
     @GetMapping()
@@ -33,6 +36,7 @@ public class PatientController {
     @GetMapping("/view")
     public String patientView(@RequestParam("id") Long id, Model model) {
         log.info("Display patient ID " + id + " folder");
+        model.addAttribute("risk", riskService.getRiskLevel(id));
         model.addAttribute("patient", patientService.getPatientId(id));
         model.addAttribute("notes", noteService.getAllNotesPatId(id));
         return "patientView";
