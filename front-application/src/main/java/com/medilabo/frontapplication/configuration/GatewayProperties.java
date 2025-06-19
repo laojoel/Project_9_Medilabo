@@ -11,7 +11,7 @@ public class GatewayProperties {
 
     // authentication application
 
-    @Value("${authentication-uri}")
+    @Value("${authentication-application-uri}")
     private String authenticationUri;
 
     // patient application

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Configuration
 public class AuthenticationRouting {
 
-    @Value("${authentication-uri}")
+    @Value("${authentication-application-uri}")
     private String authenticationUri;
 
     @Bean

@@ -28,7 +28,7 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
         this.restTemplate = restTemplate;
     }
 
-    @Value("${authentication-token-validation-uri}")
+    @Value("${authentication-application-token-validation-uri}")
     private String authenticationValidationUri;
 
     @Override

@@ -14,6 +14,17 @@ services:
     networks:
       - intra-network
 
+  authentication-application: #------------------------------------------------ authentication application
+    build: ./authentication-application
+    image: authentication-application
+    container_name: authentication-application
+    ports:
+      - 18080:8085
+    environment:
+      GATEWAY_APPLICATION_URI: gateway-application:8080
+    networks:
+      - intra-network
+
   front-application: #-------------------------------------------------- front application
     build: ./front-application
     image: front-application
