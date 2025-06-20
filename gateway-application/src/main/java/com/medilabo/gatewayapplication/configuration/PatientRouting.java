@@ -11,9 +11,11 @@ import com.medilabo.gatewayapplication.security.GatewayAuthenticationFilter;
 @Configuration
 public class PatientRouting {
 
-    @Value("${patient-application-uri}/")
+    //private String hardCoded = "http://patient-application:8081/patient/all";
+    //"http://patient-application:8081/patient/all"
+    @Value("${patient-application-uri}")
     private String patientUri;
-    @Value("${patient-application-uri}/patient/all") // TEST TRY TO CHECK
+    @Value("${patient-application-uri}/patient/all")
     private String allPatientsUri;
     @Value("${patient-application-uri}/create")
     private String patientCreationUri;
@@ -26,11 +28,11 @@ public class PatientRouting {
     public RouteLocator patientRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
-                .route(r -> r.path("/patient/{id}").filters         (f -> f.filter(filter)).uri(patientUri))
+                //.route(r -> r.path("/patient/{id}").filters         (f -> f.filter(filter)).uri(patientUri))
                 .route(r -> r.path("/patient/all").filters          (f -> f.filter(filter)).uri(allPatientsUri))
-                .route(r -> r.path("/patient/create").filters       (f -> f.filter(filter)).uri(patientCreationUri))
-                .route(r -> r.path("/patient/modify").filters       (f -> f.filter(filter)).uri(patientModificationUri))
-                .route(r -> r.path("/patient/delete/{id}").filters  (f -> f.filter(filter)).uri(patientDeletionUri))
+                //.route(r -> r.path("/patient/create").filters       (f -> f.filter(filter)).uri(patientCreationUri))
+                //.route(r -> r.path("/patient/modify").filters       (f -> f.filter(filter)).uri(patientModificationUri))
+                //.route(r -> r.path("/patient/delete/{id}").filters  (f -> f.filter(filter)).uri(patientDeletionUri))
                 .build();
     }
 
