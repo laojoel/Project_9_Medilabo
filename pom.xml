@@ -18,6 +18,7 @@
         <module>patient-application</module>
         <module>authentication-application</module>
         <module>note-application</module>
+        <module>risk-application</module>
     </modules>
 
     <build>

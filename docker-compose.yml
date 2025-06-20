@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   gateway-application: #------------------------------------------------ gateway application
     build: ./gateway-application
@@ -18,10 +16,13 @@ services:
     build: ./authentication-application
     image: authentication-application
     container_name: authentication-application
+    restart: always
     ports:
-      - 18080:8085
+      - 18085:8085
     environment:
       GATEWAY_APPLICATION_URI: gateway-application:8080
+    volumes:
+      - .m2:/root/.m2
     networks:
       - intra-network
 
@@ -32,7 +33,7 @@ services:
     ports:
       - 18082:8082
     environment:
-      GATEWAY_APPLICATION_URI: gateway-application:8080
+      GATEWAY_APPLICATION_URL: gateway-application:8080
     networks:
       - intra-network
 
@@ -41,7 +42,7 @@ services:
     image: risk-application
     container_name: risk-application
     ports:
-      - 18082:8084
+      - 18084:8084
     environment:
       GATEWAY_APPLICATION_URI: gateway-application:8080
     networks:
@@ -62,18 +63,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: TestPassword
     networks:
       - intra-network
-
-  auth-service:
-    build: ./authentication-application
-    image: authentication-application
-    container_name: authentication-application
-    restart: always
-    ports:
-      - 18080:8083
-    networks:
-      - intra-network
-    volumes:
-      - .m2:/root/.m2
 
   patient-database: #------------------------------------------------------------- patient database (mysql)
     image: mysql:8.0.13
@@ -103,13 +92,25 @@ services:
       patient-database:
         condition: service_healthy
     ports:
-      - 18081:8083
+      - 18083:8083
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://patient-database:3306/patients?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATA_MONGODB_URI: mongodb://note-database:27018/notes
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: TestPassword
     networks:
       - intra-network
+
+  note-database: #--------------------------------------------------- note database
+    image: mongo:6-jammy
+    container_name: note-database
+    command: mongod --port 27018
+    ports:
+      - 27018:27017
+    networks:
+      - intra-network
+    volumes:
+      - noteDatabase:/data/db
+      - noteDatabaseConfig:/data/configdb
 
 networks: #--------------------------------------------------------------- network & volume database
   intra-network:
@@ -117,3 +118,5 @@ networks: #--------------------------------------------------------------- netwo
 
 volumes:
   patientDatabase:
+  noteDatabase:
+  noteDatabaseConfig:

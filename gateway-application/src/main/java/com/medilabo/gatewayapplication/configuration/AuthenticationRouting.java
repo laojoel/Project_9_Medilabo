@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.medilabo.gatewayapplication.security.GatewayAuthenticationFilter;
+
 @Configuration
 public class AuthenticationRouting {
 
