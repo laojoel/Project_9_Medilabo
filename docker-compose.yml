@@ -82,7 +82,7 @@ services:
       - intra-network
     volumes:
       - patientDatabase:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   note-application: #------------------------------------------------ note application
     build: ./note-application
