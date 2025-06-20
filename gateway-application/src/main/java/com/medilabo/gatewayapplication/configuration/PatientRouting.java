@@ -13,7 +13,7 @@ public class PatientRouting {
 
     @Value("${patient-application-uri}/")
     private String patientUri;
-    @Value("${patient-application-uri}/all")
+    @Value("${patient-application-uri}/patient/all") // TEST TRY TO CHECK
     private String allPatientsUri;
     @Value("${patient-application-uri}/create")
     private String patientCreationUri;

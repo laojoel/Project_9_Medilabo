@@ -33,7 +33,11 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("Signal Filter");
+        System.out.println("\nSignal Filter");
+        System.out.println(" URI --------------------------xxx-----------------------> " + exchange.getRequest().getURI());
+        System.out.println(" Path -------------------------xxx-----------------------> " + exchange.getRequest().getURI().getPath());
+        System.out.println(" basePath ---------------------xxx-----------------------> " + exchange.getRequest().getPath());
+        System.out.println(" _ ");
         if (!exchange.getRequest().getURI().getPath().contains("/authentication")) {
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 ServerHttpResponse response = exchange.getResponse();
