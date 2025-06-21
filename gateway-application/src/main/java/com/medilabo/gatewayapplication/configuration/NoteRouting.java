@@ -26,11 +26,11 @@ public class NoteRouting {
     public RouteLocator noteRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
-                .route(r -> r.path("/note/{id}").filters(f -> f.filter(filter)).uri(noteUri))
-                .route(r -> r.path("/note/patId/{patId}").filters(f -> f.filter(filter)).uri(patIdNotesUri))
-                .route(r -> r.path("/note/create").filters(f -> f.filter(filter)).uri(noteCreationUri))
-                .route(r -> r.path("/note/modify").filters(f -> f.filter(filter)).uri(noteModificationUrl))
-                .route(r -> r.path("/note/delete/{id}").filters(f -> f.filter(filter)).uri(noteDeletionUri))
+                .route(r -> r.path("/note/{id}")          .filters(f -> f.filter(filter).rewritePath("/note/(?<remaining>.*)", "/${remaining}")).uri(noteUri))
+                .route(r -> r.path("/note/patId/{patId}") .filters(f -> f.filter(filter).rewritePath("/note/(?<remaining>.*)", "/${remaining}")).uri(patIdNotesUri))
+                .route(r -> r.path("/note/create")        .filters(f -> f.filter(filter).rewritePath("/note/(?<remaining>.*)", "/${remaining}")).uri(noteCreationUri))
+                .route(r -> r.path("/note/modify")        .filters(f -> f.filter(filter).rewritePath("/note/(?<remaining>.*)", "/${remaining}")).uri(noteModificationUrl))
+                .route(r -> r.path("/note/delete/{id}")   .filters(f -> f.filter(filter).rewritePath("/note/(?<remaining>.*)", "/${remaining}")).uri(noteDeletionUri))
                 .build();
     }
 

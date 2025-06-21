@@ -18,7 +18,7 @@ public class RiskRouting {
     public RouteLocator riskRouterLocator(RouteLocatorBuilder builder, GatewayAuthenticationFilter filter) {
         return builder
                 .routes()
-                .route(r -> r.path("/risk/{id}").filters(f -> f.filter(filter)).uri(riskUri))
+                .route(r -> r.path("/risk/{id}").filters(f -> f.filter(filter).rewritePath("/risk/(?<remaining>.*)", "/${remaining}")).uri(riskUri))
                 .build();
     }
 }

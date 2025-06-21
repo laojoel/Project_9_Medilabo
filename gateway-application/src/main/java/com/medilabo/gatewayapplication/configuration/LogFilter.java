@@ -15,19 +15,22 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class LogFilter implements GlobalFilter {
 
+    /*
+     *  DEBUG ONLY FUNCTIONALITY
+     *  Allow us to print the entry request URI versus the output forwarded URI
+     */
+
     private static final Logger logger = LoggerFactory.getLogger(LogFilter.class);
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, org.springframework.cloud.gateway.filter.GatewayFilterChain chain) {
         return chain.filter(exchange).doOnSuccess(aVoid -> {
-            // Log the final forward URL
+
             String requestUri = exchange.getRequest().getURI().toString(); // Original request URI
             String forwardUri = exchange.getAttribute("org.springframework.cloud.gateway.support.ServerWebExchangeUtils.gatewayRequestUrl").toString();
 
-            logger.info("\n|||||||||||||||||| Original Request URI: {}", requestUri);
-            logger.info("|||||||||||||||||| Forwarding to URI: {} \n", forwardUri);
+            logger.debug("\n Original Request URI: {} = VS = {} \n", requestUri, forwardUri);
 
-            exchange.getAttributes().forEach((key, value) -> log.info("OOOOOOOOOOOOOOOOO Exchange Attribute: {} -> {}", key, value));
             System.out.println(" \n");
         });
     }

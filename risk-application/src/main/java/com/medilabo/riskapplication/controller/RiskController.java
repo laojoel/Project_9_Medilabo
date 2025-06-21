@@ -16,12 +16,12 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/risk")
+@RequestMapping("/")
 public class RiskController {
 
     private final RiskService riskService;
 
-    @GetMapping("/{patId}")
+    @GetMapping("{patId}")
     public ResponseEntity<String> notesPatient(@PathVariable("patId") int patId) {
         log.info("risk evaluation for patient ID {}", patId);
 

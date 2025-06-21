@@ -6,9 +6,9 @@ services:
     ports:
       - 18080:8080
     environment:
-      GATEWAY_APPLICATION_URI: gateway-application:8080
       PATIENT_APPLICATION_URI: http://patient-application:8081
-      FRONT_APPLICATION_URI: front-application:8082
+      NOTE_APPLICATION_URI: http://note-application:8083
+      RISK_APPLICATION_URI: http://risk-application:8084
     networks:
       - intra-network
 
@@ -44,7 +44,7 @@ services:
     ports:
       - 18084:8084
     environment:
-      GATEWAY_APPLICATION_URI: gateway-application:8080
+      GATEWAY_APPLICATION_URI: http://gateway-application:8080
     networks:
       - intra-network
 
