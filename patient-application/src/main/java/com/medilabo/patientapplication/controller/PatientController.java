@@ -48,4 +48,10 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(createdPatient);
     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Patient> delete(@PathVariable("id") long id) {
+        if(patientService.delete((int)id)) {return ResponseEntity.status(HttpStatus.OK).build();}
+        else {return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+    }
+
 }

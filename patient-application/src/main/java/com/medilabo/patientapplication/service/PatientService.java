@@ -46,4 +46,9 @@ public class PatientService {
     public Patient create(Patient patient) {
         return patientRepository.save(patient);
     }
+
+    public boolean delete(int id) {
+        patientRepository.deleteById(id);
+        return !patientRepository.existsById(id);
+    }
 }

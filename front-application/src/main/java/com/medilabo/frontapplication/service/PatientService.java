@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -68,14 +69,18 @@ public class PatientService {
         return responseEntity.getBody();
     }
 
-    public Patient delete(long id) {
+    public boolean delete(long id) {
         log.info("delete patients id " + id);
-        ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientDeletionUri()+"/"+id,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<Patient>() {}
-        );
-        return responseEntity.getBody();
+        try {
+            authRestTemplate.exchange(
+                    routes.getPatientDeletionUri() + "/" + id,
+                    HttpMethod.DELETE,
+                    null,
+                    Void.class);
+            return true;
+        }
+        catch (HttpClientErrorException e) {
+            return false;
+        }
     }
 }

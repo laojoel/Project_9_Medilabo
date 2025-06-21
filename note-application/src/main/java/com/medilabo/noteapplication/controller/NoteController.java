@@ -65,7 +65,6 @@ public class NoteController {
     public ResponseEntity<Note> delete(@PathVariable("id") String id) {
         if(noteService.delete(id)) {return ResponseEntity.status(HttpStatus.OK).build();}
         else {return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
-
     }
 
 
