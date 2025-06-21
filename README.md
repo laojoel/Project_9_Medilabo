@@ -10,4 +10,4 @@ To run the project locally:
   3) Access **http://localhost:8080/**
 
 Basic architecture presantation:
-![basic architecture diagram](readmeImages/architecture4b.PNG)
+![basic architecture diagram](readmeImages/architecture4b.png)
