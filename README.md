@@ -7,7 +7,7 @@ To run the project locally:
   
   1) run the command "mvn clean install"
   2) run the command "docker-compose up --build"
-  3) Access **http://localhost:8080/**
+  3) Access **[http://localhost:8080/](http://localhost:18082/login)**
 
 Basic architecture presantation:
 ![basic architecture diagram](readmeImages/architecture4b.png)
