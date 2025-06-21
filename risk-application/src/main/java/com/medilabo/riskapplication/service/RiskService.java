@@ -31,11 +31,11 @@ public class RiskService {
         int triggerCount = triggerCount(notes);
         if (triggerCount == 0)                                          {return NONE;}
         else if (age >= 30 && triggerCount >= 2 && triggerCount <= 5)   {return BORDERLINE;}
-        else if (gender == 'M' && age < 30 && triggerCount >= 3)        {return IN_DANGER;}
-        else if (gender == 'F' && age < 30 && triggerCount >= 4)        {return IN_DANGER;}
+        else if (gender == 'M' && age >= 30 && triggerCount >= 3)       {return IN_DANGER;} // was <= 30 but corrected
+        else if (gender == 'F' && age >= 30 && triggerCount >= 4)       {return IN_DANGER;} // was <= 30 but corrected
         else if (age >= 30 && (triggerCount == 6 || triggerCount == 7)) {return IN_DANGER;}
-        else if (gender == 'M' && age < 30 && triggerCount >= 5)        {return EARLY_ONSET;}  // Impossible, but required on the demand.
-        else if (gender == 'F' && age < 30 && triggerCount >= 7)        {return EARLY_ONSET;} // Impossible, but required on the demand.
+        else if (gender == 'M' && age < 30 && triggerCount >= 5)        {return EARLY_ONSET;}
+        else if (gender == 'F' && age < 30 && triggerCount >= 7)        {return EARLY_ONSET;}
         else if (age >= 30 && triggerCount >= 8)                        {return IN_DANGER;}
         else                                                            {return UNDEFINED;}
     }
