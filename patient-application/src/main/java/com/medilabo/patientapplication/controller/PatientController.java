@@ -30,28 +30,25 @@ public class PatientController {
 
     @GetMapping("{id}")
     public ResponseEntity<Patient> patientId(@PathVariable("id") Long id) {
-        System.out.println("View ID " + id);
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getById(id.intValue()));
     }
 
     @PostMapping("modify")
     public ResponseEntity<Patient> update(@RequestBody Patient patient) {
-        System.out.println("Updating ID " + patient.getId());
         Patient updatedPatient = patientService.update(patient);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
     }
 
     @PostMapping("create")
     public ResponseEntity<Patient> create(@RequestBody Patient patient) {
-        System.out.println("Creating " + patient.getFirstName() + " " + patient.getLastName());
         Patient createdPatient = patientService.create(patient);
         return ResponseEntity.status(HttpStatus.OK).body(createdPatient);
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Patient> delete(@PathVariable("id") long id) {
-        if(patientService.delete((int)id)) {return ResponseEntity.status(HttpStatus.OK).build();}
-        else {return ResponseEntity.status(HttpStatus.NOT_FOUND).build();}
+    public ResponseEntity<Boolean> delete(@PathVariable("id") long id) {
+        Boolean result = patientService.delete((int)id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

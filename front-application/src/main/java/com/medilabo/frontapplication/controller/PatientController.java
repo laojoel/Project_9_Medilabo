@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import static com.medilabo.frontapplication.constant.ExecutionConstant.GENERIC_DELETION_ERROR;
+
 @Slf4j
 @RequestMapping("/patients")
 @Controller
@@ -56,7 +58,12 @@ public class PatientController {
             log.warn("patient modification form has incorrect entries");
            return "patientUpdate";
         }
-        patientService.modify(patient);
+        if(patientService.modify(patient) != null) {
+            model.addAttribute("message", "patient has been successfully updated");
+        }
+        else {
+            model.addAttribute("error", GENERIC_DELETION_ERROR);
+        }
         model.addAttribute("patient",  patient);
         return "patientView";
     }
@@ -75,17 +82,28 @@ public class PatientController {
             log.warn("patient creation form has incorrect entries");
             return "patientCreate";
         }
-        patientService.create(patient);
-        model.addAttribute("patient",  patient);
+        Patient createdPatient = patientService.create(patient);
+        if (createdPatient == null) {
+            model.addAttribute("error", "patient has been successfully created with id " + patient.getId());
+            return "patients";
+        }
+
+        model.addAttribute("message", "patient has been successfully created with id " + patient.getId());
+        model.addAttribute("patient",  createdPatient);
         return "patientView";
     }
 
     @GetMapping("/delete")
     public String patientDelete(@RequestParam("id") Long id, Model model) {
         log.info("Delete patient ID " + id + " info");
-        patientService.delete(id);
-        model.addAttribute("patient", patientService.getPatientId(id));
-        return "patientUpdate";
+        if(patientService.delete(id)) {
+            model.addAttribute("message", "Patient id " + id + "has been successfully deleted");
+        }
+        else {
+            model.addAttribute("error", "Patient id " + id + " could not be deleted");
+        }
+        model.addAttribute("patients", patientService.getAllPatients());
+        return "patients";
     }
 
 

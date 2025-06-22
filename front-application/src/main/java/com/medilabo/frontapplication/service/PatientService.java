@@ -48,10 +48,10 @@ public class PatientService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         ResponseEntity<Patient> responseEntity = authRestTemplate.exchange(
-                routes.getPatientModificationUri()+"/"+patient.getId(),
+                routes.getPatientModificationUri() + "/" + patient.getId(),
                 HttpMethod.POST,
                 new HttpEntity<>(patient, headers),
-                new ParameterizedTypeReference<Patient>() {}
+                new ParameterizedTypeReference<>() {}
         );
         return responseEntity.getBody();
     }
@@ -64,23 +64,21 @@ public class PatientService {
                 routes.getPatientCreationUri(),
                 HttpMethod.POST,
                 new HttpEntity<>(patient, headers),
-                new ParameterizedTypeReference<Patient>() {}
+                new ParameterizedTypeReference<>() {}
         );
         return responseEntity.getBody();
     }
 
     public boolean delete(long id) {
         log.info("delete patients id " + id);
-        try {
-            authRestTemplate.exchange(
-                    routes.getPatientDeletionUri() + "/" + id,
-                    HttpMethod.DELETE,
-                    null,
-                    Void.class);
-            return true;
-        }
-        catch (HttpClientErrorException e) {
-            return false;
-        }
+        Boolean result = authRestTemplate.exchange(
+                routes.getPatientDeletionUri() + "/" + id,
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<Boolean>() {}
+        ).getBody();
+        if (result == null) {return false;}
+        return result;
+
     }
 }
