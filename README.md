@@ -1,4 +1,4 @@
-MEDILABO
+MEDILABO - Project 9/9
 =========================================
 
 To run the project locally:
@@ -15,3 +15,6 @@ To run the project locally:
 
 🌱 Green Coding Recommendations
 
+1) 💾 Set up a caching system (in-memory) to avoid repeatedly calling back the database.
+2) 🍃 Reduce the request size by sending back only the necessary object's fields instead of the entire object.
+3) 🧱 Optimizing the database architecture.
