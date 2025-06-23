@@ -24,4 +24,9 @@ public class Note {
     @JsonProperty("note")
     @NotBlank(message = "note cannot be empty")
     private String content;
+
+    public void setPatIdAndContent(long patId, String content) {
+        this.patId = patId;
+        this.content = content;
+    }
 }

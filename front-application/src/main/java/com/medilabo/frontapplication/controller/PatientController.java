@@ -45,7 +45,7 @@ public class PatientController {
         if (patient == null) {
             log.error("Patient id " + id + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
-            model.addAttribute(patientService.getAllPatients());
+            model.addAttribute("patients", patientService.getAllPatients());
             return "patients";
         }
         model.addAttribute("patient", patient);
@@ -72,19 +72,20 @@ public class PatientController {
     }
 
     @GetMapping("/modify")
-    public String patientEdit(@RequestParam("id") Long id, Model model) {
+    public String modifyPatient(@RequestParam("id") Long id, Model model) {
         Patient patient = patientService.getPatientId(id);
         if (patient == null) {
             log.info("Patient ID " + id + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
-            return "patientView";
+            model.addAttribute("patients", patientService.getAllPatients());
+            return "patients"; // send the user to the patients list
         }
         model.addAttribute("patient", patient);
-        return "patientUpdate";
+        return "patientUpdate"; // display the patient details to modify
     }
 
     @PostMapping("/modify")
-    public String patientUpdate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
+    public String modifyPatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
         System.out.println("POST patientUpdate | Entry point");
         if (result.hasErrors()) {
             log.warn("patient modification form has incorrect entries");
@@ -103,13 +104,13 @@ public class PatientController {
     }
 
     @GetMapping("/create")
-    public String patientCreate(Model model) {
+    public String createPatient(Model model) {
         model.addAttribute("patient", new Patient());
         return "patientCreate";
     }
 
     @PostMapping("/create")
-    public String patientCreate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result,
+    public String createPatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult result,
                                 Model model) {
         if (result.hasErrors()) {
             log.warn("patient creation form has incorrect entries");
@@ -128,7 +129,7 @@ public class PatientController {
     }
 
     @GetMapping("/delete")
-    public String patientDelete(@RequestParam("id") Long id, Model model) {
+    public String deletePatient(@RequestParam("id") Long id, Model model) {
         if(patientService.delete(id)) {
             log.info("Patient ID " + id + " is null");
             model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_DELETION);

@@ -42,4 +42,10 @@ public class Patient {
     public String getFullName() {
         return firstName + " " + lastName;
     }
+
+    public void setIdAndFullName(long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
