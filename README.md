@@ -11,7 +11,7 @@ To run the project locally:
 
 🧭 Basic architecture presantation:
 
-![basic architecture diagram](readmeImages/architecture5.png)
+![basic architecture diagram](readmeImages/architecture5b.png)
 
 🌱 Green Coding Recommendations
 
