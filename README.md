@@ -10,7 +10,8 @@ To run the project locally:
   3) Access 🌎 **[http://localhost:18082/login](http://localhost:18082/login)**
 
 🧭 Basic architecture presantation:
-![basic architecture diagram](readmeImages/architecture4b.png)
+
+![basic architecture diagram](readmeImages/architecture5.png)
 
 🌱 Green Coding Recommendations
 
