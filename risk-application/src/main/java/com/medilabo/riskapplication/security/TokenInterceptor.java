@@ -13,16 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        System.out.println("\n\n\n ----------------------------------------------");
-        System.out.println("INCOMING REQUEST (bearer Received) = " + authorizationHeader);
 
         if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
-            //String token = authorizationHeader.substring(7); // Remove "Bearer " prefix
-            request.getSession().setAttribute("token", authorizationHeader); // Store token in HttpSession
-            log.info("Token stored in HttpSession: {}", authorizationHeader);
+            request.getSession().setAttribute("token", authorizationHeader);
         } else {
             log.warn("Authorization header is missing or invalid");
         }

@@ -22,7 +22,6 @@ public class RestTemplateConfig {
     @Bean("authRestTemplate")
     RestTemplate authRestTemplate(HttpSession session) {
         String token = (String) session.getAttribute("token");
-        log.info("Bearer token to send to downstream services: " + token);
         return new RestTemplateBuilder(rt -> rt.getInterceptors().add((request, body, execution) -> {
             request.getHeaders().add("Authorization", token);
             return execution.execute(request, body);

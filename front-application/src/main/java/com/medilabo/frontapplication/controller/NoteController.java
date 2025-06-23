@@ -6,7 +6,8 @@ import com.medilabo.frontapplication.service.NoteService;
 import com.medilabo.frontapplication.service.PatientService;
 import static com.medilabo.frontapplication.constant.MessageConstant.*;
 import static com.medilabo.frontapplication.constant.ErrorConstant.*;
-import jakarta.servlet.http.HttpServletRequest;
+
+import com.medilabo.frontapplication.service.RiskService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,10 +23,12 @@ import org.springframework.web.bind.annotation.*;
 public class NoteController {
     private final NoteService noteService;
     private final PatientService patientService;
+    private final RiskService riskService;
 
-    public NoteController(NoteService noteService, PatientService patientService) {
+    public NoteController(NoteService noteService, PatientService patientService, RiskService riskService) {
         this.noteService = noteService;
         this.patientService = patientService;
+        this.riskService = riskService;
     }
 
     @GetMapping("/create")
@@ -49,13 +52,14 @@ public class NoteController {
 
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("note") Note note, BindingResult result,
-                                Model model, HttpServletRequest request) {
+                                Model model) {
         if (result.hasErrors()) {
             log.warn("note creation form has incorrect entries");
             return "noteCreate";
         }
         Note createdNote = noteService.create(note);
         if (createdNote == null) {
+            log.error("Note creation is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_CREATION);
             model.addAttribute("note", note);
             return "noteCreate";
@@ -64,14 +68,22 @@ public class NoteController {
         long patId = note.getPatId();
         Patient patient = patientService.getPatientId(patId);
         if (patient==null) {
+            log.error("Patient ID" + patId + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
             model.addAttribute(patientService.getAllPatients());
             return "patients";
         }
 
+        String risk = riskService.getRiskLevelForPatientId(patId);
+        if (risk == null) {
+            log.error("Risk for patient ID" + patId + " is null");
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
+        }
+
         model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_NOTE_CREATION);
         model.addAttribute("patient",  patient);
         model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
+        model.addAttribute("risk", risk);
         return "patientView";
     }
 
@@ -85,10 +97,12 @@ public class NoteController {
     @PostMapping("/modify")
     public String update(@Valid @ModelAttribute("note") Note note, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            log.warn("Note modification entry has error");
             return "noteUpdate";
         }
         Note modifiedNote = noteService.modify(note);
         if (modifiedNote == null) {
+            log.error("Note ID" + note.getId() + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_MODIFICATION);
         }
         else {
@@ -103,6 +117,7 @@ public class NoteController {
     @GetMapping("/delete")
     public String delete(@Valid @ModelAttribute("id") String id, @RequestParam("patId") long patId, Model model) {
         if(noteService.delete(id)) {
+            log.error("Note ID" + id + " is null");
             model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_NOTE_DELETION);
         }
         else {

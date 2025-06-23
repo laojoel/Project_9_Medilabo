@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DataInitializerConfiguration {
 
     /*
-     * DATABASE INITIALIZATION IS AUTOMATICALLY TRIGGERED AT FIRST LAUNCH
+     * DATABASE INITIALIZATION IS AUTOMATICALLY TRIGGERED TO POPULATE THE DATABASE AT FIRST
      * Similar to data.sql and schema.sql do for mySQL
      */
 

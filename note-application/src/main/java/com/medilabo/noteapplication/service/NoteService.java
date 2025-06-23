@@ -19,8 +19,7 @@ public class NoteService {
     }
 
     public List<Note> getAllByPatId(int patId) {
-        List<Note> notes = noteRepository.findAllByPatId(patId);
-        return notes;
+        return noteRepository.findAllByPatId(patId);
     }
 
     public Note getById(String id) {

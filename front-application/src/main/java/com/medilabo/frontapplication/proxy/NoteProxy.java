@@ -13,7 +13,6 @@ import java.util.List;
 
 import com.medilabo.frontapplication.configuration.GatewayProperties;
 import com.medilabo.frontapplication.model.Note;
-import com.medilabo.frontapplication.model.Patient;
 
 @Component
 public class NoteProxy {

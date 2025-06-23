@@ -1,7 +1,6 @@
 package com.medilabo.gatewayapplication.security;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -33,11 +32,6 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("\nSignal Filter");
-        System.out.println(" URI --------------------------xxx-----------------------> " + exchange.getRequest().getURI());
-        System.out.println(" Path -------------------------xxx-----------------------> " + exchange.getRequest().getURI().getPath());
-        System.out.println(" basePath ---------------------xxx-----------------------> " + exchange.getRequest().getPath());
-        System.out.println(" _ ");
         if (!exchange.getRequest().getURI().getPath().contains("/authentication")) {
             if (!exchange.getRequest().getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 ServerHttpResponse response = exchange.getResponse();
@@ -49,18 +43,16 @@ public class GatewayAuthenticationFilter implements GatewayFilter {
             }
 
             String authenticationHeader = Objects.requireNonNull(exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION)).getFirst();
-            if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {;
+            if (authenticationHeader != null && authenticationHeader.startsWith("Bearer ")) {
                 authenticationHeader = authenticationHeader.substring(7);
             }
 
             try {
-                System.out.println("\n\n\nChallenging Token: " + authenticationHeader);
                 boolean isValid = Boolean.TRUE.equals(restTemplate.getForObject(String.format(authenticationValidationUri, authenticationHeader), Boolean.class));
-                log.info("Token Validity " + isValid);
+                log.info("Token Validity is " + isValid);
 
-                // If valid, forward the token to back-end services
                 if (isValid) {
-                    System.out.println("\n\n\nmutated author ------------------------------------------------------- \n" + authenticationHeader);
+                    // Forward the token to back-end services
                     ServerHttpRequest mutatedRequest = exchange.getRequest()
                             .mutate()
                             .header(HttpHeaders.AUTHORIZATION, "Bearer " + authenticationHeader)

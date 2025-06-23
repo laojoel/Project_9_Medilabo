@@ -5,7 +5,6 @@ import com.medilabo.frontapplication.model.Patient;
 import com.medilabo.frontapplication.service.NoteService;
 import com.medilabo.frontapplication.service.PatientService;
 import com.medilabo.frontapplication.service.RiskService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,17 +33,17 @@ public class PatientController {
     }
 
     @GetMapping()
-    public String home(HttpServletRequest request, Model model) {
+    public String home(Model model) {
         model.addAttribute("patients", patientService.getAllPatients());
         return "patients";
     }
 
     @GetMapping("/view")
     public String patientView(@RequestParam("id") Long id, Model model) {
-        log.info("Display patient ID " + id + " folder");
 
         Patient patient = patientService.getPatientId(id);
         if (patient == null) {
+            log.error("Patient id " + id + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
             model.addAttribute(patientService.getAllPatients());
             return "patients";
@@ -53,6 +52,7 @@ public class PatientController {
 
         String risk = riskService.getRiskLevelForPatientId(id);
         if (risk == null) {
+            log.error("risk patient id " + id + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
             model.addAttribute("risk", "unavailable");
         }
@@ -62,6 +62,7 @@ public class PatientController {
 
         List<Note> notes = noteService.getAllNotesPatId(id);
         if (notes == null) {
+            log.error("notes for patient id " + id + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_NOT_FOUND);
         }
         else {
@@ -72,9 +73,9 @@ public class PatientController {
 
     @GetMapping("/modify")
     public String patientEdit(@RequestParam("id") Long id, Model model) {
-        log.info("Modify patient ID " + id + " info");
         Patient patient = patientService.getPatientId(id);
         if (patient == null) {
+            log.info("Patient ID " + id + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
             return "patientView";
         }
@@ -91,6 +92,7 @@ public class PatientController {
         }
         Patient modifiedPatient = patientService.modify(patient);
         if(modifiedPatient == null) {
+            log.info("Patient ID " + patient.getId() + " info");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_MODIFICATION);
             model.addAttribute("patient", patient);
             return "patientUpdate";
@@ -102,20 +104,20 @@ public class PatientController {
 
     @GetMapping("/create")
     public String patientCreate(Model model) {
-        log.info("display creation form for patient");
         model.addAttribute("patient", new Patient());
         return "patientCreate";
     }
 
     @PostMapping("/create")
     public String patientCreate(@Valid @ModelAttribute("patient") Patient patient, BindingResult result,
-                                Model model, HttpServletRequest request) {
+                                Model model) {
         if (result.hasErrors()) {
             log.warn("patient creation form has incorrect entries");
             return "patientCreate";
         }
         Patient createdPatient = patientService.create(patient);
         if (createdPatient == null) {
+            log.info("Patient ID " + patient.getId() + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_CREATION);
             model.addAttribute("patients", patientService.getAllPatients());
             return "patients";
@@ -127,8 +129,8 @@ public class PatientController {
 
     @GetMapping("/delete")
     public String patientDelete(@RequestParam("id") Long id, Model model) {
-        log.info("Delete patient ID " + id + " info");
         if(patientService.delete(id)) {
+            log.info("Patient ID " + id + " is null");
             model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_DELETION);
         }
         else {

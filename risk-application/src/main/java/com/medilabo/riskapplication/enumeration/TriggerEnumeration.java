@@ -12,7 +12,7 @@ public enum TriggerEnumeration {
     FUMEUSE("fumeuse"),
     ANORMAL("anormal"),
     CHOLESTEROL("cholestérol"),
-    VERTIGES("vertiges"),
+    VERTIGE("vertige"),
     RECHUTE("rechute"),
     REACTION("réaction"),
     ANTICORPS("anticorps");
