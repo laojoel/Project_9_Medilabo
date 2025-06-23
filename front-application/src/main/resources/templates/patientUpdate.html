@@ -9,7 +9,7 @@
     <main class="container">
         <h1>UPDATE PATIENT</h1><br>
         <div class="card">
-            <form th:action="@{/patients/update(id=${patient.id})}" method="post" enctype="multipart/form-data" th:object="${patient}" style="margin: 10px 50px 10px;">
+            <form th:action="@{/patients/modify(id=${patient.id})}" method="post" enctype="multipart/form-data" th:object="${patient}" style="margin: 10px 50px 10px;">
 
                 <input type="hidden" th:field="*{id}" />
 
@@ -74,6 +74,13 @@
                     </div>
                 </div>
             </form>
+
+            <div th:if="${message}" class="d-flex justify-content-left col-sm-10 mb-3">
+                <p class="text-success" th:text="${message}"></p>
+            </div>
+            <div th:if="${error}" class="d-flex justify-content-left col-sm-10 mb-3">
+                <p class="text-success" th:text="${error}"></p>
+            </div>
         </div>
     </main>
 </html>

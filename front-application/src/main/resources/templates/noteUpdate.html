@@ -21,7 +21,7 @@
 			<p class="text-danger text-center" th:text="${error}"></p>
 		</div>
 
-		<form th:action="@{/notes/update}" th:object="${note}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
+		<form th:action="@{/notes/modify}" th:object="${note}" method="post" enctype="multipart/form-data" style="margin: 10px 50px 10px;">
 			<div class="mx-2 p-2">
 				<input type="hidden" th:field="*{patient}" />
 				<input type="hidden" th:field="*{patId}" />
@@ -35,6 +35,13 @@
 				<a th:href="@{/patients/view(id=${note.patId})}" class="btn btn-outline-info btn-lg">Cancel</a>
 			</div>
 		</form>
+
+		<div th:if="${message}" class="d-flex justify-content-left col-sm-10 mb-3">
+			<p class="text-success" th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="d-flex justify-content-left col-sm-10 mb-3">
+			<p class="text-success" th:text="${error}"></p>
+		</div>
 	</div>
 
 </body>

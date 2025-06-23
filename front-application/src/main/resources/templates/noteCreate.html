@@ -31,6 +31,13 @@
 				<a th:href="@{/patients/view(id=${note.patId})}" class="btn btn-outline-info btn-lg">Cancel</a>
 			</div>
 		</form>
+
+		<div th:if="${message}" class="d-flex justify-content-left col-sm-10 mb-3">
+			<p class="text-success" th:text="${message}"></p>
+		</div>
+		<div th:if="${error}" class="d-flex justify-content-left col-sm-10 mb-3">
+			<p class="text-success" th:text="${error}"></p>
+		</div>
 	</div>
 
 </body>

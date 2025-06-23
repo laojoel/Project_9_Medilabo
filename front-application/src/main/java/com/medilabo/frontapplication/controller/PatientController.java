@@ -1,5 +1,6 @@
 package com.medilabo.frontapplication.controller;
 
+import com.medilabo.frontapplication.model.Note;
 import com.medilabo.frontapplication.model.Patient;
 import com.medilabo.frontapplication.service.NoteService;
 import com.medilabo.frontapplication.service.PatientService;
@@ -12,7 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.medilabo.frontapplication.constant.ExecutionConstant.GENERIC_DELETION_ERROR;
+import java.util.List;
+
+import static com.medilabo.frontapplication.constant.ErrorConstant.*;
+import static com.medilabo.frontapplication.constant.MessageConstant.*;
 
 @Slf4j
 @RequestMapping("/patients")
@@ -38,16 +42,43 @@ public class PatientController {
     @GetMapping("/view")
     public String patientView(@RequestParam("id") Long id, Model model) {
         log.info("Display patient ID " + id + " folder");
-        model.addAttribute("risk", riskService.getRiskLevel(id));
-        model.addAttribute("patient", patientService.getPatientId(id));
-        model.addAttribute("notes", noteService.getAllNotesPatId(id));
+
+        Patient patient = patientService.getPatientId(id);
+        if (patient == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
+            model.addAttribute(patientService.getAllPatients());
+            return "patients";
+        }
+        model.addAttribute("patient", patient);
+
+        String risk = riskService.getRiskLevelForPatientId(id);
+        if (risk == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
+            model.addAttribute("risk", "unavailable");
+        }
+        else {
+            model.addAttribute("risk", risk);
+        }
+
+        List<Note> notes = noteService.getAllNotesPatId(id);
+        if (notes == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_NOT_FOUND);
+        }
+        else {
+            model.addAttribute("notes", notes);
+        }
         return "patientView";
     }
 
     @GetMapping("/modify")
     public String patientEdit(@RequestParam("id") Long id, Model model) {
         log.info("Modify patient ID " + id + " info");
-        model.addAttribute("patient", patientService.getPatientId(id));
+        Patient patient = patientService.getPatientId(id);
+        if (patient == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
+            return "patientView";
+        }
+        model.addAttribute("patient", patient);
         return "patientUpdate";
     }
 
@@ -58,12 +89,13 @@ public class PatientController {
             log.warn("patient modification form has incorrect entries");
            return "patientUpdate";
         }
-        if(patientService.modify(patient) != null) {
-            model.addAttribute("message", "patient has been successfully updated");
+        Patient modifiedPatient = patientService.modify(patient);
+        if(modifiedPatient == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_MODIFICATION);
+            model.addAttribute("patient", patient);
+            return "patientUpdate";
         }
-        else {
-            model.addAttribute("error", GENERIC_DELETION_ERROR);
-        }
+        model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_MODIFICATION);
         model.addAttribute("patient",  patient);
         return "patientView";
     }
@@ -84,11 +116,11 @@ public class PatientController {
         }
         Patient createdPatient = patientService.create(patient);
         if (createdPatient == null) {
-            model.addAttribute("error", "patient has been successfully created with id " + patient.getId());
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_CREATION);
+            model.addAttribute("patients", patientService.getAllPatients());
             return "patients";
         }
-
-        model.addAttribute("message", "patient has been successfully created with id " + patient.getId());
+        model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_CREATION);
         model.addAttribute("patient",  createdPatient);
         return "patientView";
     }
@@ -97,10 +129,10 @@ public class PatientController {
     public String patientDelete(@RequestParam("id") Long id, Model model) {
         log.info("Delete patient ID " + id + " info");
         if(patientService.delete(id)) {
-            model.addAttribute("message", "Patient id " + id + "has been successfully deleted");
+            model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_DELETION);
         }
         else {
-            model.addAttribute("error", "Patient id " + id + " could not be deleted");
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_DELETION);
         }
         model.addAttribute("patients", patientService.getAllPatients());
         return "patients";

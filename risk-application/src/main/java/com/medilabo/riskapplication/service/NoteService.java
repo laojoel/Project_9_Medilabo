@@ -11,28 +11,19 @@ import java.util.List;
 
 import com.medilabo.riskapplication.configuration.GatewayProperties;
 import com.medilabo.riskapplication.model.Note;
+import com.medilabo.riskapplication.proxy.NoteProxy;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class NoteService {
 
-    private final GatewayProperties routes;
-    private final RestTemplate      authRestTemplate;
-
-    public NoteService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayProperties routes) {
-        this.routes = routes;
-        this.authRestTemplate = authRestTemplate;
+    private final NoteProxy noteProxy;
+    public NoteService(NoteProxy noteProxy) {
+        this.noteProxy = noteProxy;
     }
 
     public List<Note> getNotesPatId(long patId) {
-        log.info("fetch notes from patient id " + patId);
-        ResponseEntity<List<Note>> responseEntity = authRestTemplate.exchange(
-                routes.getPatIdNotesUri()+"/"+patId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {}
-        );
-        return responseEntity.getBody();
+        return noteProxy.getNotesFromPatId((int)patId);
     }
 }

@@ -10,29 +10,19 @@ import org.springframework.web.client.RestTemplate;
 
 import com.medilabo.frontapplication.configuration.GatewayProperties;
 import com.medilabo.frontapplication.model.Note;
+import com.medilabo.frontapplication.proxy.RiskProxy;
 
 @Service
 public class RiskService {
 
-    private final RestTemplate      authRestTemplate;
-    private final GatewayProperties routes;
+    private final RiskProxy riskProxy;
 
-    public RiskService(@Qualifier("authRestTemplate") RestTemplate authRestTemplate, GatewayProperties routes) {
-        this.authRestTemplate = authRestTemplate;
-        this.routes = routes;
+    public RiskService(RiskProxy riskProxy) {
+        this.riskProxy = riskProxy;
     }
 
-    public String getRiskLevel(long patId) {
-        ResponseEntity<String> responseEntity = authRestTemplate.exchange(
-                routes.getRiskUri()+"/"+(int)patId,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {}
-        );
-        if (!(responseEntity.getStatusCode() == HttpStatus.OK)) {
-            return "?";
-        }
-        return responseEntity.getBody();
+    public String getRiskLevelForPatientId(long patId) {
+        return riskProxy.getRiskForPatId(patId);
 
     }
 
