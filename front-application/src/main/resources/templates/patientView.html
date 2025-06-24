@@ -58,7 +58,7 @@
             </thead>
             <tbody>
             <tr th:each="note : ${notes}">
-                <td th:text="${note.content}"></td>
+                <td th:text="${note.content}" class="note-content"></td>
                 <td class="note-tb-right-area">
                     <a th:href="@{/notes/modify(id=${note.id})}">Edit</a>
                     <a th:href="@{/notes/delete(id=${note.id}, patId=${note.patId})}">Delete</a>
@@ -73,5 +73,14 @@
         <div th:if="${error}" class="d-flex justify-content-left col-sm-10 mb-3">
             <p class="text-success" th:text="${error}"></p>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const noteContents = document.querySelectorAll('.note-content');
+                noteContents.forEach(noteContent => {
+                    noteContent.innerHTML = noteContent.innerHTML.replace(/\n/g, '<br>');
+                });
+            });
+        </script>
     </main>
 </html>

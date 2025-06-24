@@ -98,6 +98,16 @@ public class PatientController {
             model.addAttribute("patient", patient);
             return "patientUpdate";
         }
+
+        long patId = patient.getId();
+        List<Note> notes = noteService.getAllNotesPatId(patId);
+        if (notes == null) {
+            log.error("notes for patient id " + patId + "is null");
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_NOT_FOUND);
+        }
+        else {
+            model.addAttribute("notes", notes);
+        }
         model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_MODIFICATION);
         model.addAttribute("patient",  patient);
         return "patientView";
