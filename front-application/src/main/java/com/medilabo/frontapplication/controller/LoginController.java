@@ -29,7 +29,7 @@ public class LoginController {
     @GetMapping({"/","/login"})
     public String loginPage(Model model) {
         model.addAttribute("loginForm", new LoginForm());
-        return "login";
+        return "loginPage";
     }
 
     @PostMapping("/login")
@@ -46,7 +46,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         request.getSession().invalidate();
-        return "redirect:/login";
+        return "redirect:/loginPage";
     }
 
 }

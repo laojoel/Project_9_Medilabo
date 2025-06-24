@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 public class HomeController {
-
     @GetMapping("/home")
     public String home() {
         return "home";
     }
-
-
 }

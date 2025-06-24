@@ -24,6 +24,7 @@ class RiskServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    // should successfully return a String as risk level
     @Test
     void testGetRiskLevelForPatientId() {
         // Given
@@ -40,6 +41,7 @@ class RiskServiceTest {
         verify(riskProxy, times(1)).getRiskForPatId(patientId);
     }
 
+    // should return null because the microservice did not be able to compute it
     @Test
     void testGetRiskLevelForPatientId_Unavailable() {
         // Given

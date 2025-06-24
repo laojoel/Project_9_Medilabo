@@ -27,6 +27,7 @@ class PatientServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    // return all patients from patient application
     @Test
     void testGetAllPatients() {
         // Arrange
@@ -48,6 +49,7 @@ class PatientServiceTest {
         assertEquals("jane", result.get(1).getFirstName());
     }
 
+    // successfully returns a Patient object from ID
     @Test
     void testGetPatientId() {
         // Arrange
@@ -65,6 +67,7 @@ class PatientServiceTest {
         verify(patientProxy, times(1)).get(1);
     }
 
+    // successfully return the modified Patient
     @Test
     void testModify() {
         // Arrange
@@ -83,6 +86,7 @@ class PatientServiceTest {
         verify(patientProxy, times(1)).modify(patient);
     }
 
+    // successfully return the created Patient
     @Test
     void testCreate() {
         // Arrange
@@ -99,6 +103,7 @@ class PatientServiceTest {
         verify(patientProxy, times(1)).create(patient);
     }
 
+    // Successfully return boolean True as the deletion was completed
     @Test
     void testDeleteSuccess() {
         // Arrange
@@ -112,6 +117,7 @@ class PatientServiceTest {
         verify(patientProxy, times(1)).delete(1);
     }
 
+    // should return False as the deletion failed for this patient ID (not found)
     @Test
     void testDeleteNotFound() {
         // Arrange

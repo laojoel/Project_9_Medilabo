@@ -27,6 +27,7 @@ class NoteServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    // should return the list of Notes from a given patient id
     @Test
     void testGetAllNotesPatId() {
         // Arrange
@@ -48,6 +49,7 @@ class NoteServiceTest {
         verify(noteProxy, times(1)).getNotesFromPatId((int) patId);
     }
 
+    // should return a Note object given a note ID
     @Test
     void testGetNoteId() {
         // Arrange
@@ -65,6 +67,7 @@ class NoteServiceTest {
         verify(noteProxy, times(1)).get(noteId);
     }
 
+    // should return the newly created Note
     @Test
     void testCreate() {
         // Arrange
@@ -81,6 +84,7 @@ class NoteServiceTest {
         verify(noteProxy, times(1)).create(note);
     }
 
+    // should return the modified note
     @Test
     void testModify() {
         // Arrange
@@ -99,8 +103,9 @@ class NoteServiceTest {
         verify(noteProxy, times(1)).modify(note);
     }
 
+    // should return 'true' as the deletion was completed
     @Test
-    void testDelete() {
+    void testDelete_Success() {
         // Arrange
         String noteId = "abc123";
         when(noteProxy.delete(noteId)).thenReturn(true);
@@ -113,6 +118,7 @@ class NoteServiceTest {
         verify(noteProxy, times(1)).delete(noteId);
     }
 
+    // should return 'false' as the deletion did not work (not found)
     @Test
     void testDeleteNotFound() {
         // Arrange

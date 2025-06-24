@@ -12,13 +12,13 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
-        if (request.getServletPath().contains("/login")) {
+        if (request.getServletPath().contains("/loginPage")) {
             log.info("Login Page -> no token required");
             return true;
         }
         if (!StringUtils.hasText((String)request.getSession().getAttribute("token"))) {
             log.warn("Missing token");
-            response.sendRedirect("/login");
+            response.sendRedirect("/loginPage");
             return false;
         }
         log.info("Token found");

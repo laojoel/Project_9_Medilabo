@@ -26,9 +26,8 @@ public class NoteController {
         Note note = noteService.getById(id);
         if (note == null) {
             log.error("Note ID: " + id + " Not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(note);
+        return ResponseEntity.status(HttpStatus.OK).body(note);
     }
 
     @GetMapping("patId/{patId}")
