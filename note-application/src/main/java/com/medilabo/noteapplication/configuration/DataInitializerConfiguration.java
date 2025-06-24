@@ -31,7 +31,7 @@ public class DataInitializerConfiguration {
             if (noteRepository.count() == 0) {
                 log.info("mangoDB (noSQL) Database initialization with bases given values");
                 List<Note> notes = new ArrayList<>();
-                add(notes, 1, "TestNone", "Le patient déclare qu'il 'se sent très bien' Poids égal ou inférieur au poids recommandé");
+                add(notes, 1, "TestNone", "Le patient déclare qu'il 'se sent très bien' masse égal ou inférieur à la masse recommandé");
                 add(notes, 2, "TestBorderline", "Le patient déclare qu'il ressent beaucoup de stress au travail Il se plaint également que son audition est anormale dernièrement");
                 add(notes, 2, "TestBorderline", "Le patient déclare avoir fait une réaction aux médicaments au cours des 3 derniers mois Il remarque également que son audition continue d'être anormale");
                 add(notes, 3, "TestInDanger", "Le patient déclare qu'il fume depuis peu");
