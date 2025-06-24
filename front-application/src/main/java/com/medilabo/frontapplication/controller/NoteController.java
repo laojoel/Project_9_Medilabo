@@ -31,6 +31,10 @@ public class NoteController {
         this.riskService = riskService;
     }
 
+    /*
+    Display an empty 'note creation page'
+    User will be redirected to the 'Patients Page' if the Note's patient ID isn't found.
+     */
     @GetMapping("/create")
     public String create(@RequestParam("patId") Long patId, Model model) {
         Patient Patient = patientService.getPatientId(patId);
@@ -51,12 +55,16 @@ public class NoteController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid @ModelAttribute("note") Note note, BindingResult result,
-                                Model model) {
+    public String create(@Valid @ModelAttribute("note") Note note, BindingResult result, Model model) {
+        // verify if form inputs
         if (result.hasErrors()) {
             log.warn("note creation form has incorrect entries");
             return "noteCreate";
         }
+
+        // verify that the Note Application successfully created the new Note
+        // then we redirect user to the updated Patient detail Page
+
         Note createdNote = noteService.create(note);
         if (createdNote == null) {
             log.error("Note creation is null");
@@ -100,6 +108,8 @@ public class NoteController {
             log.warn("Note modification entry has error");
             return "noteUpdate";
         }
+
+        // verify that the Note Application successfully updated the Note
         Note modifiedNote = noteService.modify(note);
         if (modifiedNote == null) {
             log.error("Note ID" + note.getId() + " is null");

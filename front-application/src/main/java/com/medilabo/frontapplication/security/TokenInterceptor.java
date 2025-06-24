@@ -10,6 +10,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 public class TokenInterceptor implements HandlerInterceptor {
 
+    /*
+    Verify that all incoming clients request have a Token
+    At the exemption of the "login page" route which is public
+    */
+
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         if (request.getServletPath().contains("/loginPage")) {

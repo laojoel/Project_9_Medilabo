@@ -32,6 +32,10 @@ public class LoginController {
         return "loginPage";
     }
 
+    /*
+    Redirect to 'Home Page' if the client credentials are validated by the [Authentication Application].
+    if the validation fail, the [TokenInterceptor] would automatically redirect the user back to the 'Login Page'
+     */
     @PostMapping("/login")
     public String doLogin(@ModelAttribute LoginForm loginForm, HttpServletRequest request) {
         log.info("Process login for username: " + loginForm.getUsername());

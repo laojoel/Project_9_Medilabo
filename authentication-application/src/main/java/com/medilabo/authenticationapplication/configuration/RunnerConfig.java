@@ -18,6 +18,10 @@ public class RunnerConfig implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
+    /*
+    Setup in-memory users, hors scope of project applications
+    */
+
     @Override
     public void run(String... args) {
         UserCredential user = new UserCredential("user", encoder.encode("user"), true);

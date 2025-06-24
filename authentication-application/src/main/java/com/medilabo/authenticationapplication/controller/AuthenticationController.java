@@ -19,6 +19,11 @@ public class AuthenticationController {
     public final AuthenticationService authenticationService;
     private final AuthenticationManager authManager;
 
+    /*
+    Generates Token. Requested from the Front application passing across the gateway when the client send
+    the correct credentials (username + password on login page).
+    */
+
     @PostMapping
     public ResponseEntity<String> generateToken(@RequestBody AuthenticationRequest authRequest) {
         log.info("Token generation for username: " + authRequest.getUsername());
@@ -31,6 +36,11 @@ public class AuthenticationController {
             throw new RuntimeException("User invalid access ");
         }
     }
+
+    /*
+        Used to authenticate a Token
+        called by the Gateway when a request is passing on a protected route.
+     */
 
     @GetMapping("/validate")
     public ResponseEntity<Boolean> validateToken(@RequestParam("token") String token) {

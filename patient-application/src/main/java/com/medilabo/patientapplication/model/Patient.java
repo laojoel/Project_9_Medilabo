@@ -1,12 +1,9 @@
 package com.medilabo.patientapplication.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.processing.Pattern;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;

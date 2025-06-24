@@ -22,6 +22,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtProcessor {
 
+    // secret could be encrypted to add up an extra security layer
     @Value("${jwt.secret-key}")
     private String secretKey;
 
@@ -32,7 +33,6 @@ public class JwtProcessor {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
-
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
