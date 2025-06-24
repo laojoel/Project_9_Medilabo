@@ -41,4 +41,9 @@ public class Patient {
     @Column
     private String phoneNumber;
 
+    public void setIdAndFullName(long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }

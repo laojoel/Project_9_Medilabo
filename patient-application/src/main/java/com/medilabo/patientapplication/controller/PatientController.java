@@ -25,7 +25,6 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getAll());
     }
 
-
     @GetMapping("{id}")
     public ResponseEntity<Patient> patientId(@PathVariable("id") Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getById(id.intValue()));

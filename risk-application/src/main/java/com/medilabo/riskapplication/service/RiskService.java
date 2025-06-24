@@ -19,18 +19,21 @@ public class RiskService {
     private final PatientService patientService;
 
     public String riskEvaluation(long patId) {
+        // Retrieve information from sub-applications
         Patient patient = patientService.getPatientId(patId);
         List<Note> notes = noteService.getNotesPatId(patId);
 
-        // verify integrity
+        // verify integrity of the required information
         if (patient == null || notes == null) {return null;}
         int age = patient.getAge();
         if (age == -1) {return null;}
         char gender = patient.getGenderChar();
         if (gender != 'M' && gender != 'F') {return null;}
 
+        // read notes and count triggers
         int triggerCount = triggerCount(notes);
 
+        // Apply logics to define the Risk level
         if      (gender == 'M' && age < 30 && triggerCount == 3)        {return IN_DANGER;}
         else if (gender == 'F' && age < 30 && triggerCount == 4)        {return IN_DANGER;}
         else if (age >= 30 && (triggerCount == 6 || triggerCount == 7)) {return IN_DANGER;}
@@ -39,7 +42,7 @@ public class RiskService {
 
         else if (gender == 'M' && age < 30 && triggerCount >= 5)        {return EARLY_ONSET;}
         else if (gender == 'F' && age < 30 && triggerCount >= 7)        {return EARLY_ONSET;}
-        else if (age >= 30 && (triggerCount >= 7 || triggerCount >= 8)) {return EARLY_ONSET;}
+        else if (age >= 30 && (triggerCount >= 7))                      {return EARLY_ONSET;}
 
         else if (triggerCount == 0)                                     {return NONE;}
 
@@ -50,7 +53,8 @@ public class RiskService {
         int count = 0;
         for (Note note : notes) {
             for (TriggerEnumeration trigger : TriggerEnumeration.values()) {
-                if (note.getContent().toLowerCase().contains(trigger.getValue())) {
+                // set both notes and triggers to lower cases to avoid any miss-matches
+                if (note.getContent().toLowerCase().contains(trigger.getValue().toLowerCase())) {
                     count++;
                 }
             }

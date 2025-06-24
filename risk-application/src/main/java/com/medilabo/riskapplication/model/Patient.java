@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
@@ -37,5 +38,11 @@ public class Patient {
             return 'x';
         }
         return chr;
+    }
+
+    // test helper
+    public void setAgeGender(int age, String gender) {
+        this.dateOfBirth = LocalDate.now().minus(Period.ofYears(age));
+        this.gender = gender;
     }
 }
