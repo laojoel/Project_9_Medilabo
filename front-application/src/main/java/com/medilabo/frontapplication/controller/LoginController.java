@@ -26,7 +26,7 @@ public class LoginController {
         this.properties = properties;
     }
 
-    @GetMapping({"/","/login"})
+    @GetMapping({"/","/login", "/loginPage"})
     public String loginPage(Model model) {
         model.addAttribute("loginForm", new LoginForm());
         return "loginPage";
@@ -36,7 +36,8 @@ public class LoginController {
     Redirect to 'Home Page' if the client credentials are validated by the [Authentication Application].
     if the validation fail, the [TokenInterceptor] would automatically redirect the user back to the 'Login Page'
      */
-    @PostMapping("/login")
+
+    @PostMapping("/loginPage")
     public String doLogin(@ModelAttribute LoginForm loginForm, HttpServletRequest request) {
         log.info("Process login for username: " + loginForm.getUsername());
         String accessToken = restTemplate.postForObject(properties.getAuthenticationUri(), loginForm, String.class);
