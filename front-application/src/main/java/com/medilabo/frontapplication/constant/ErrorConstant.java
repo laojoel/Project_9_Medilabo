@@ -14,4 +14,6 @@ public interface ErrorConstant {
     String ERROR_PATIENT_DELETION     = "Patient could not be deleted";
 
     String ERROR_RISK                 = "Risk could not be evaluated at that time";
+
+    String UNAVAILABLE                = "Unavailable";
 }

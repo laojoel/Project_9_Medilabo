@@ -76,6 +76,7 @@ public class NoteController {
         long patId = note.getPatId();
         Patient patient = patientService.getPatientId(patId);
         if (patient==null) {
+            // if patient doesn't exist anymore
             log.error("Patient ID" + patId + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_NOT_FOUND);
             model.addAttribute(patientService.getAllPatients());
@@ -86,12 +87,16 @@ public class NoteController {
         if (risk == null) {
             log.error("Risk for patient ID" + patId + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
+            model.addAttribute("risk", UNAVAILABLE);
+        }
+        else {
+            model.addAttribute("risk", risk);
         }
 
         model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_NOTE_CREATION);
         model.addAttribute("patient",  patient);
         model.addAttribute("notes",  noteService.getAllNotesPatId(patId));
-        model.addAttribute("risk", risk);
+
         return "patientView";
     }
 
@@ -118,6 +123,17 @@ public class NoteController {
         else {
             model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_NOTE_MODIFICATION);
         }
+
+        // re-evaluate risk level since note update may affect the result
+        String risk = riskService.getRiskLevelForPatientId(note.getPatId());
+        if (risk == null) {
+            model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
+            model.addAttribute("risk", UNAVAILABLE);
+        }
+        else {
+            model.addAttribute("risk", risk);
+        }
+
         long patId = note.getPatId();
         model.addAttribute("patient",  patientService.getPatientId(patId));
         model.addAttribute("notes",  noteService.getAllNotesPatId(patId));

@@ -54,7 +54,7 @@ public class PatientController {
         if (risk == null) {
             log.error("risk patient id " + id + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
-            model.addAttribute("risk", "unavailable");
+            model.addAttribute("risk", UNAVAILABLE);
         }
         else {
             model.addAttribute("risk", risk);
@@ -86,7 +86,6 @@ public class PatientController {
 
     @PostMapping("/modify")
     public String modifyPatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult result, Model model) {
-        System.out.println("POST patientUpdate | Entry point");
         if (result.hasErrors()) {
             log.warn("patient modification form has incorrect entries");
            return "patientUpdate";
@@ -104,10 +103,21 @@ public class PatientController {
         if (notes == null) {
             log.error("notes for patient id " + patId + "is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_NOTE_NOT_FOUND);
+            model.addAttribute("risk", UNAVAILABLE);
         }
         else {
             model.addAttribute("notes", notes);
+            // re-evaluate the risk level since age and gender modification may affect the result
+            String risk = riskService.getRiskLevelForPatientId(patId);
+            if (risk == null) {
+                model.addAttribute(ERROR_ATTRIBUTE, ERROR_RISK);
+                model.addAttribute("risk", UNAVAILABLE);
+            }
+            else {
+                model.addAttribute("risk", risk);
+            }
         }
+
         model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_MODIFICATION);
         model.addAttribute("patient",  patient);
         return "patientView";
@@ -126,15 +136,20 @@ public class PatientController {
             log.warn("patient creation form has incorrect entries");
             return "patientCreate";
         }
+
         Patient createdPatient = patientService.create(patient);
         if (createdPatient == null) {
+            // redirect to Patients list if creation failed due to technical issue
             log.info("Patient ID " + patient.getId() + " is null");
             model.addAttribute(ERROR_ATTRIBUTE, ERROR_PATIENT_CREATION);
             model.addAttribute("patients", patientService.getAllPatients());
             return "patients";
         }
+
         model.addAttribute(MESSAGE_ATTRIBUTE, SUCCESS_PATIENT_CREATION);
         model.addAttribute("patient",  createdPatient);
+        // Patient's creation has no notes, so risk will always be 'None' at first.
+        model.addAttribute("risk", "None");
         return "patientView";
     }
 
